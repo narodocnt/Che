@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Google OAuth Redirect</title>
+</head>
+<body>
+    <h2>Зачекайте, виконується авторизація…</h2>
+
+    <!-- Підключення логіки Google OAuth -->
+    <script src="auth-google.js"></script>
+    <script>
+        // Обробка redirect від Google
+        handleOAuthRedirect();
+    </script>
+</body>
+</html>
