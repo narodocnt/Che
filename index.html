@@ -5,9 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Відділ народної творчості</title>
 
-<script src="https://accounts.google.com/gsi/client" async defer></script>
-<meta http-equiv="Permissions-Policy" content="identity-credentials-get=(self 'https://accounts.google.com')">
-
 <style>
 body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; background: #f0f2f5; color: #333; }
 header { background: #8b0000; color: white; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
@@ -64,7 +61,7 @@ footer { background:#b30000; color:white; text-align:center; padding:20px; margi
 
 <div class="container" id="contacts">
     <h2 class="section-title">Контакти</h2>
-    <p>Email: narodocnt@ukr.net</p>
+    <p>Email: info@example.com</p>
     <p>Телефон: +380 00 000 00 00</p>
     <p><strong>Ми у Facebook:</strong> <a href="https://www.facebook.com/narodocntcherkasy/" target="_blank">facebook.com/narodocntcherkasy</a></p>
 </div>
@@ -73,10 +70,10 @@ footer { background:#b30000; color:white; text-align:center; padding:20px; margi
     © 2025 Відділ народної творчості ОЦНТ
 </footer>
 
-<!-- Контейнер для динамічних кнопок логіну -->
+<!-- Контейнер для динамічних кнопок і модалок -->
 <div id="login-container"></div>
 
-<!-- Підключення зовнішніх скриптів -->
+<!-- Підключення системи логіну та Google/Facebook OAuth -->
 <script src="login-system.js"></script>
 <script src="auth-google.js"></script>
 
