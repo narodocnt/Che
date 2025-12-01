@@ -113,8 +113,7 @@ document.addEventListener("DOMContentLoaded", () => {
     </div>
   `);
 
- document.addEventListener("DOMContentLoaded", () => {
-  // Dropdown меню
+  // --- DROPDOWN & MENU HANDLERS ---
   const loginBtn = document.getElementById("loginBtn");
   const loginDropdown = document.getElementById("loginDropdown");
 
@@ -123,13 +122,10 @@ document.addEventListener("DOMContentLoaded", () => {
   loginDropdown.addEventListener("mouseenter", () => loginDropdown.style.display = "flex");
   loginDropdown.addEventListener("mouseleave", () => loginDropdown.style.display = "none");
 
-  // Кнопки меню
   document.getElementById("menuLogin").addEventListener("click", () => openModal("modalLogin"));
   document.getElementById("menuEmail").addEventListener("click", () => openModal("modalEmail"));
   document.getElementById("menuGoogle").addEventListener("click", () => startGoogleSignIn());
   document.getElementById("menuFacebook").addEventListener("click", () => startFacebookOAuth());
-});
-
 
 });
 
