@@ -1,6 +1,6 @@
 /* auth-google.js — PKCE для GitHub Pages + n8n */
 
-const GOOGLE_CLIENT_ID = "225496350184-4q6j2iqu5n9hkjt8u4age31bd4nkmedo.apps.googleusercontent.com";
+const GOOGLE_CLIENT_ID = "225496350184-8ppjonps7e592h69eltuh2t7gk71bhl8.apps.googleusercontent.com";
 const REDIRECT_URI = "https://narodocnt.online/oauth2callback.html"; // точно збігається з GitHub Pages
 const N8N_WEBHOOK = "https://narodocnt.online:5678/webhook/google-signup";
 
