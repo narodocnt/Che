@@ -176,7 +176,7 @@ async function postToN8N(payload){
 }
 
 function startGoogleSignIn(){
-  const redirectUri = window.location.origin + "/oauth2callback";
+  const redirectUri = window.location.origin + "/oauth2callback.html";
   const url =
     "https://accounts.google.com/o/oauth2/v2/auth?client_id=" +
     GOOGLE_CLIENT_ID +
