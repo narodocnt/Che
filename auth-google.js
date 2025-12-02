@@ -1,45 +1,95 @@
-/* auth-google.js */
-// Google OAuth 2.0 для вашого сайту
+/* auth-google.js — PKCE VERSION (2025) */
+/* Працює на статичному сайті + n8n */
 
-const GOOGLE_CLIENT_ID = '225496350184-4q6j2iqu5n9hkjt8u4age31bd4nkmedo.apps.googleusercontent.com';
-const N8N_WEBHOOK = 'https://narodocnt.online:5678/webhook/google-signup';
+const GOOGLE_CLIENT_ID = "225496350184-4q6j2iqu5n9hkjt8u4age31bd4nkmedo.apps.googleusercontent.com";
+const REDIRECT_URI = "https://narodocnt.online/oauth2callback";
+const N8N_WEBHOOK = "https://narodocnt.online:5678/webhook/google-signup";
 
-// Функція для початку входу через Google
-function startGoogleSignIn() {
-  const redirectUri = 'https://narodocnt.online/oauth2callback'; // має точно збігатися з Google Cloud
-  const scope = encodeURIComponent('openid email profile');
-  const url = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=token&scope=${scope}&prompt=select_account`;
-  window.location.href = url;
+// Генерація випадкового рядка
+function randomString(length = 64) {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_.~';
+    let result = '';
+    for (let i = 0; i < length; i++) result += chars.charAt(Math.floor(Math.random() * chars.length));
+    return result;
 }
 
-// Обробка Google redirect
+// Створення SHA256 для PKCE
+async function sha256(plain) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(plain);
+    const hash = await crypto.subtle.digest("SHA-256", data);
+    return btoa(String.fromCharCode(...new Uint8Array(hash)))
+        .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+
+// Початок Google OAuth
+async function startGoogleSignIn() {
+    const codeVerifier = randomString();
+    const codeChallenge = await sha256(codeVerifier);
+
+    // Зберігаємо verifier щоб використати після redirect
+    localStorage.setItem("google_code_verifier", codeVerifier);
+
+    const authUrl =
+        "https://accounts.google.com/o/oauth2/v2/auth" +
+        "?client_id=" + GOOGLE_CLIENT_ID +
+        "&redirect_uri=" + encodeURIComponent(REDIRECT_URI) +
+        "&response_type=code" +
+        "&scope=" + encodeURIComponent("openid email profile") +
+        "&code_challenge=" + codeChallenge +
+        "&code_challenge_method=S256" +
+        "&prompt=select_account";
+
+    window.location.href = authUrl;
+}
+
+// Обробка редіректу після входу
 async function handleGoogleRedirect() {
-  const hash = window.location.hash.substr(1); // отримуємо все після #
-  const params = new URLSearchParams(hash);
-  const token = params.get('access_token');
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get("code");
 
-  if (token) {
-    console.log('Google Access Token:', token);
+    if (!code) return;
 
-    // Надсилаємо токен на n8n для обробки
-    try {
-      await fetch(N8N_WEBHOOK, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type: 'google', access_token: token, ts: new Date().toISOString() })
-      });
-      alert('Вхід через Google успішний! Дані відправлено на сервер.');
-    } catch (err) {
-      console.error('Помилка відправки на n8n:', err);
-      alert('Помилка відправки даних на сервер.');
+    const codeVerifier = localStorage.getItem("google_code_verifier");
+
+    // Обмін коду на токен
+    const tokenResponse = await fetch("https://oauth2.googleapis.com/token", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body:
+            "client_id=" + encodeURIComponent(GOOGLE_CLIENT_ID) +
+            "&code=" + encodeURIComponent(code) +
+            "&code_verifier=" + encodeURIComponent(codeVerifier) +
+            "&grant_type=authorization_code" +
+            "&redirect_uri=" + encodeURIComponent(REDIRECT_URI)
+    });
+
+    const tokenData = await tokenResponse.json();
+
+    if (tokenData.error) {
+        alert("Помилка Google OAuth: " + tokenData.error_description);
+        return;
     }
 
-    // Очищаємо URL
-    window.history.replaceState(null, '', window.location.pathname);
-  }
+    const idToken = tokenData.id_token;
+
+    // Відправляємо дані у твоє n8n
+    await fetch(N8N_WEBHOOK, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            type: "google",
+            id_token: idToken,
+            ts: new Date().toISOString()
+        })
+    });
+
+    alert("Вхід через Google успішний!");
+
+    // Чистимо URL
+    window.history.replaceState({}, document.title, "/");
 }
 
-// Якщо ми на сторінці oauth2callback — обробляємо redirect
-if (window.location.pathname === '/oauth2callback') {
-  handleGoogleRedirect();
+if (window.location.pathname === "/oauth2callback") {
+    handleGoogleRedirect();
 }
