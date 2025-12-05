@@ -23,7 +23,6 @@ return btoa(String.fromCharCode(...new Uint8Array(hash)))
     .replace(/\+/g, '-')
     .replace(/\//g, '_')
     .replace(/=+$/, '');
-
 }
 
 // Step 1 — Старт Google OAuth
