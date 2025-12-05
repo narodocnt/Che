@@ -20,9 +20,10 @@ const encoder = new TextEncoder();
 const data = encoder.encode(plain);
 const hash = await crypto.subtle.digest("SHA-256", data);
 return btoa(String.fromCharCode(...new Uint8Array(hash)))
-.replace(/+/g, '-')
-.replace(///g, '_')
-.replace(/=+$/, '');
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=+$/, '');
+
 }
 
 // Step 1 — Старт Google OAuth
