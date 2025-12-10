@@ -2,7 +2,7 @@
 // 1. Старт Google OAuth
 // -------------------------
 async function startGoogleOAuth() {
-    const clientId = "225496350184-m83n5351r571i33mn4pk86u93aed6jnc.apps.googleusercontent.com";
+    const clientId = "734541752522-1rkn3nt7bifjiaekbkcushi9o707tmdp.apps.googleusercontent.com";
     const redirectUri = "https://narodocnt.online/oauth2callback.html";
 
     // 1. Генеруємо code_verifier
