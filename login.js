@@ -1,28 +1,30 @@
-// ===== НАЛАШТУВАННЯ =====
+  // login.js
+
 document.addEventListener("DOMContentLoaded", () => {
-
-    const GOOGLE_CLIENT_ID = "734541752522-bqp7ljgjq27k8psn3pv6g3c3rcp16fhi.apps.googleusercontent.com";
-    const GOOGLE_REDIRECT_URI = "https://narodocnt.site/oauth2callback.html";
-    const N8N_LOGIN_WEBHOOK = "https://n8n.narodocnt.online/webhook/google-login";
-
     const btn = document.getElementById("googleLoginBtn");
+
     if (!btn) {
-        console.warn("❗ Кнопка googleLoginBtn не знайдена");
+        console.error("❌ Кнопка googleLoginBtn не знайдена в DOM");
         return;
     }
 
-    btn.style.display = "inline-block";
+    console.log("✅ Google login button loaded");
+
+    const GOOGLE_CLIENT_ID = "734541752522-bqp7ljgjq27k8psn3pv6g3c3rcp16fhi.apps.googleusercontent.com";
+    const REDIRECT_URI = "https://narodocnt.online/oauth2callback.html";
+
+    btn.style.display = "block";
 
     btn.addEventListener("click", () => {
-        const authUrl =
+        const url =
             "https://accounts.google.com/o/oauth2/v2/auth" +
             "?client_id=" + encodeURIComponent(GOOGLE_CLIENT_ID) +
-            "&redirect_uri=" + encodeURIComponent(GOOGLE_REDIRECT_URI) +
+            "&redirect_uri=" + encodeURIComponent(REDIRECT_URI) +
             "&response_type=token" +
             "&scope=" + encodeURIComponent("openid email profile") +
             "&prompt=select_account";
 
-        window.location.href = authUrl;
+        window.location.href = url;
     });
-
 });
+
