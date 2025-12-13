@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    const GOOGLE_CLIENT_ID = "225496350184-4q6j2iqu5n9hkjt8u4age31bd4nkmedo.apps.googleusercontent.com";
+    const GOOGLE_CLIENT_ID = "734541752522-bqp7ljgjq27k8psn3pv6g3c3rcp16fhi.apps.googleusercontent.com";
     const GOOGLE_REDIRECT_URI = "https://narodocnt.site/oauth2callback.html";
     const N8N_LOGIN_WEBHOOK = "https://n8n.narodocnt.online/webhook/google-login";
 
