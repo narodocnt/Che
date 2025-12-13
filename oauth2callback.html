@@ -2,37 +2,51 @@
 <html lang="uk">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Google OAuth Callback</title>
-<script>
-// Отримуємо access_token із URL hash
-window.onload = () => {
-    const hash = window.location.hash.substring(1); // видаляємо #
-    const params = new URLSearchParams(hash);
-    const accessToken = params.get("access_token");
-    const idToken = params.get("id_token");
-    const expiresIn = params.get("expires_in");
-
-    if (accessToken) {
-        // Можна зберегти токен у localStorage або передати на сайт
-        localStorage.setItem("google_access_token", accessToken);
-        localStorage.setItem("google_id_token", idToken);
-        localStorage.setItem("google_token_expires", Date.now() + parseInt(expiresIn) * 1000);
-
-        // Закриваємо OAuth-вікно і повідомляємо головне вікно
-        if (window.opener) {
-            window.opener.postMessage({ success: true, accessToken, idToken }, window.location.origin);
-            window.close();
-        } else {
-            document.body.innerHTML = "<p>Успішно увійшли через Google! Закрийте цю сторінку.</p>";
-        }
-    } else {
-        document.body.innerHTML = "<p>Помилка авторизації Google.</p>";
-    }
-};
-</script>
+<title>Google Login</title>
 </head>
 <body>
-<p>Завантаження…</p>
+
+<h3>Обробка входу через Google…</h3>
+
+<script>
+(function () {
+    // Google повертає token у hash (#)
+    const hash = window.location.hash.substring(1);
+    const params = new URLSearchParams(hash);
+
+    const accessToken = params.get("access_token");
+
+    if (!accessToken) {
+        document.body.innerHTML = "❌ Помилка авторизації Google";
+        return;
+    }
+
+    // Надсилаємо токен у n8n
+    fetch("https://n8n.narodocnt.online/webhook/google-login", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            access_token: accessToken
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        console.log("n8n response:", data);
+
+        // можна зберігати сесію
+        localStorage.setItem("user", JSON.stringify(data));
+
+        // редірект назад на сайт
+        window.location.href = "/";
+    })
+    .catch(err => {
+        console.error(err);
+        document.body.innerHTML = "❌ Помилка зв’язку з сервером";
+    });
+})();
+</script>
+
 </body>
 </html>
