@@ -1,18 +1,13 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const btn = document.getElementById("googleLoginBtn");
+    const btn = document.getElementById("google-login-btn");
 
     if (!btn) {
         console.error("❌ Кнопка не знайдена");
         return;
     }
 
-    console.log("✅ Google login button loaded");
-
-    const GOOGLE_CLIENT_ID =
-        "734541752522-bqp7ljgjq27k8psn3pv6g3c3rcp16fhi.apps.googleusercontent.com";
-
-    const REDIRECT_URI =
-        "https://narodocnt.online/oauth2callback.html";
+    const GOOGLE_CLIENT_ID = "734541752522-bqp7ljgjq27k8psn3pv6g3c3rcp16fhi.apps.googleusercontent.com";
+    const REDIRECT_URI = "https://narodocnt.online/oauth2callback.html";
 
     btn.addEventListener("click", () => {
         const url =
@@ -21,6 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
             "&redirect_uri=" + encodeURIComponent(REDIRECT_URI) +
             "&response_type=code" +
             "&scope=" + encodeURIComponent("openid email profile") +
+            "&access_type=online" +
             "&prompt=select_account";
 
         window.location.href = url;
