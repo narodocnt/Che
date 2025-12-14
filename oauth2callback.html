@@ -5,7 +5,6 @@
   <title>Google авторизація</title>
 </head>
 <body>
-
 <h2>⏳ Завершуємо авторизацію через Google…</h2>
 
 <script>
@@ -21,14 +20,14 @@
   }
 
   try {
-  const res = await fetch("https://n8n.narodocnt.online/webhook-test/google-signup", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json"
-  },
-  credentials: "include",   // ← Додати сюди
-  body: JSON.stringify({ code })
-});
+    const res = await fetch("http://n8n.narodocnt.online:5678/webhook-test/google-signup", { // <- http
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      credentials: "include", // <- важливо
+      body: JSON.stringify({ code })
+    });
 
     if (!res.ok) {
       throw new Error("HTTP " + res.status);
@@ -41,6 +40,5 @@
   }
 })();
 </script>
-
 </body>
 </html>
