@@ -1,94 +1,43 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Google авторизація</title>
-
-<style>
-body {
-    font-family: Arial, sans-serif;
-    background: #f5f6f7;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-}
-.box {
-    background: white;
-    padding: 30px;
-    border-radius: 10px;
-    text-align: center;
-    max-width: 420px;
-    width: 100%;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-}
-.success { color: green; }
-.error { color: red; }
-</style>
+  <meta charset="UTF-8">
+  <title>Google авторизація</title>
 </head>
-
 <body>
 
-<div class="box" id="status">
-    ⏳ Обробка Google авторизації...
-</div>
+<h2>⏳ Завершуємо авторизацію через Google…</h2>
 
 <script>
-(async function handleGoogleRedirect() {
-    console.log("=== oauth2callback loaded ===");
+(async () => {
+  console.log("OAuth callback loaded");
 
-    const status = document.getElementById("status");
-    const url = new URL(window.location.href);
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get("code");
 
-    const code = url.searchParams.get("code");
-    const error = url.searchParams.get("error");
+  if (!code) {
+    document.body.innerHTML = "❌ Google не повернув code";
+    return;
+  }
 
-    if (error) {
-        console.error("Google error:", error);
-        status.innerHTML = `<p class="error">❌ Помилка Google: ${error}</p>`;
-        return;
+  try {
+    const res = await fetch("https://n8n.narodocnt.online/webhook-test/google-signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ code })
+    });
+
+    if (!res.ok) {
+      throw new Error("HTTP " + res.status);
     }
 
-    if (!code) {
-        status.innerHTML = `<p class="error">❌ Google не повернув code</p>`;
-        return;
-    }
-
-    console.log("Google CODE:", code);
-
-    try {
-        const response = await fetch(
-            "https://n8n.narodocnt.online/webhook-test/google-signup",
-            {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    code,
-                    redirect_uri: "https://narodocnt.online/oauth2callback.html"
-                })
-            }
-        );
-
-        if (!response.ok) {
-            throw new Error("HTTP " + response.status);
-        }
-
-        const result = await response.json();
-        console.log("n8n response:", result);
-
-        status.innerHTML = `
-            <h2 class="success">✅ Авторизація успішна!</h2>
-            <p>Можете закрити цю сторінку.</p>
-        `;
-
-    } catch (err) {
-        console.error("FETCH ERROR:", err);
-        status.innerHTML = `
-            <p class="error">❌ Помилка зʼєднання з сервером</p>
-            <small>Перевір CORS у n8n</small>
-        `;
-    }
+    document.body.innerHTML = "✅ Авторизація успішна! Можна закривати сторінку 🎉";
+  } catch (err) {
+    console.error(err);
+    document.body.innerHTML = "❌ Помилка надсилання в n8n";
+  }
 })();
 </script>
 
