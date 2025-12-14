@@ -1,4 +1,3 @@
-console.log("login.js реально завантажився");
 document.addEventListener("DOMContentLoaded", () => {
     const btn = document.getElementById("google-login-btn");
 
