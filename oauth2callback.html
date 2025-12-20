@@ -11,9 +11,9 @@ if (!code) {
   document.body.innerText = "❌ Немає authorization code";
 } else {
   // ПРОСТИЙ REDIRECT, НЕ fetch
-  window.location.href =
-    "https://n8n.narodocnt.online/webhook/google-login?code=" +
-    encodeURIComponent(code);
+window.location.href =
+  "https://n8n.narodocnt.online/webhook/google-signup?code=" +
+  encodeURIComponent(code);
 }
 </script>
 
