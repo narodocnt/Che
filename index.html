@@ -240,8 +240,7 @@
             submittedAt: new Date().toLocaleString()
         };
 
-        const webhookUrl = 'https://n8n.narodocnt.online/webhook/https://docs.google.com/spreadsheets/d/1FdvDHlBG7q_OkPlimdyx5D0dAPlkhAt7LYVHem8IYGA/edit?gid=463056327#gid=463056327'; // ЗАМІНІТЬ НА ВАШ URL
-
+        const webhookUrl = 'https://n8n.narodocnt.online/webhook/collect-application';
         try {
             const response = await fetch(webhookUrl, {
                 method: 'POST',
