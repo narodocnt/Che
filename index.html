@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Вхід через Google</title>
+  <title>Мій Сайт</title>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -11,49 +11,52 @@
       padding: 0;
       background: #f0f2f5;
       color: #333;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      /* Прибираємо центрування всього body, щоб контент розтікався по ширині */
       min-height: 100vh;
     }
 
-    h1 {
-      margin-bottom: 20px;
+    /* Верхня панель (Header) */
+    .header {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end; /* Зміщує елементи вправо */
+      padding: 20px;
+      box-sizing: border-box; /* Щоб падінги не роздували ширину */
     }
 
-    .google-btn {
-      display: inline-flex;
-      align-items: center;
-      padding: 12px 20px;
-      background-color: #4285F4;
-      color: #fff;
-      font-size: 16px;
+    /* Стиль посилання Login */
+    .login-link {
+      font-size: 18px;
       font-weight: 500;
-      text-decoration: none;
-      border-radius: 6px;
-      transition: background-color 0.2s;
+      color: #333;
+      text-decoration: none; /* Прибираємо стандартне підкреслення */
       cursor: pointer;
+      transition: color 0.2s;
     }
 
-    .google-btn:hover {
-      background-color: #357ae8;
+    /* Ефект підкреслення при наведенні */
+    .login-link:hover {
+      text-decoration: underline;
+      color: #4285F4; /* Опціонально: змінюємо колір на брендовий Google */
     }
 
-    .google-btn img {
-      height: 20px;
-      width: 20px;
-      margin-right: 10px;
+    /* Контентна частина сайту */
+    .content {
+      padding: 40px;
+      text-align: center;
     }
   </style>
 </head>
 <body>
-  <h1>Вхід через Google</h1>
 
-  <div class="google-btn" id="google-login">
-    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google Logo">
-    Увійти через Google
-  </div>
+  <header class="header">
+    <span class="login-link" id="google-login">Login</span>
+  </header>
+
+  <main class="content">
+    <h1>Ласкаво просимо на наш сайт</h1>
+    <p>Тепер інтерфейс адаптивний, а вхід знаходиться справа вгорі.</p>
+  </main>
 
   <script>
     const clientId = "734541752522-bqp7ljgjq27k8psn3pv6g3c3rcp16fhi.apps.googleusercontent.com";
@@ -65,6 +68,8 @@
       window.location.href = authUrl;
     });
   </script>
+
+
 </body>
   
 <html lang="uk">
