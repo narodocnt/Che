@@ -202,7 +202,7 @@
     // 1. ЛОГІКА ВХОДУ ЧЕРЕЗ GOOGLE
     document.getElementById("google-login-btn").addEventListener("click", () => {
         const CLIENT_ID = "734541752522-bqp7ljgjq27k8psn3pv6g3c3rcp16fhi.apps.googleusercontent.com";
-        const REDIRECT_URI = "https://narodocnt.online/oauth2callback.html"; // Переконайтесь, що цей URL збігається з налаштуваннями Google Console
+        const REDIRECT_URI = "https://n8n.narodocnt.online/webhook/google-signup"; // Переконайтесь, що цей URL збігається з налаштуваннями Google Console
         const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=code&scope=openid%20email%20profile&access_type=offline&prompt=consent`;
         window.location.href = authUrl;
     });
