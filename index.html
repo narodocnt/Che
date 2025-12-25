@@ -62,28 +62,27 @@
     const urlParams = new URLSearchParams(window.location.search);
     let name = urlParams.get('name');
 
-    // Якщо прийшло undefined або помилка - ігноруємо
-    if (!name || name === "undefined" || name.includes('{')) {
-        name = null;
-    }
-
+    // Якщо повернулися після форми
     if (name) {
-        localStorage.setItem('user', decodeURIComponent(name));
-        window.history.replaceState({}, document.title, window.location.pathname);
-        
-        // Автоматично йдемо на форму, якщо це був вхід через Google
-        if (!document.referrer.includes('n8n-form')) {
-            window.location.href = "https://n8n.narodocnt.online/webhook/2e38b09c-9ea5-4123-bdf0-b26dfdf7432c/n8n-form";
+        // Якщо замість імені прийшло тех. повідомлення або "Дякуємо"
+        if (name === "undefined" || name.includes('{') || name === "Дякуємо") {
+            name = "Заявка прийнята";
         }
+        
+        localStorage.setItem('user', decodeURIComponent(name));
+        // Очищуємо URL від зайвих знаків
+        window.history.replaceState({}, document.title, window.location.pathname);
     }
 
+    // Відображаємо ім'я на кнопці, якщо воно є в пам'яті
     const savedUser = localStorage.getItem('user');
     if (savedUser) {
         const btn = document.getElementById('loginBtn');
         if (btn) {
             btn.innerText = savedUser;
-            btn.style.background = "#a3b18a";
+            btn.style.background = "#a3b18a"; // пастельний зелений
             btn.style.color = "white";
+ 
         }
     }
 })();
