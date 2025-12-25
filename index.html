@@ -19,6 +19,9 @@
             margin: 0;
             background: var(--soft-bg);
             color: var(--text-dark);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
         header {
@@ -35,7 +38,6 @@
         .auth-btn {
             font-weight: 600;
             color: var(--soft-blue);
-            text-decoration: none;
             cursor: pointer;
             padding: 7px 20px;
             border: 2px solid var(--soft-blue);
@@ -44,12 +46,13 @@
         }
 
         .container {
-            max-width: 1000px;
-            margin: 30px auto;
-            padding: 30px;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 40px;
             background: white;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.02);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            text-align: center;
         }
 
         /* МОДАЛЬНЕ ВІКНО */
@@ -68,25 +71,26 @@
             padding: 40px; 
             border-radius: 20px;
             text-align: center; 
-            max-width: 400px;
-            position: relative; /* Щоб кліки всередині не закривали вікно */
+            max-width: 350px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
         }
 
         .btn {
             display: inline-block;
-            padding: 10px 25px;
-            border-radius: 25px;
+            padding: 12px 30px;
+            border-radius: 30px;
             text-decoration: none;
             color: white;
             font-weight: 600;
-            margin: 5px;
+            margin: 10px 5px;
             transition: 0.3s;
             border: none;
             cursor: pointer;
         }
         .btn-blue { background: var(--soft-blue); }
+        .btn-cancel { background: #eee; color: #666; }
 
-        footer { text-align: center; padding: 20px; background: white; border-top: 1px solid #eee; }
+        footer { margin-top: auto; padding: 20px; text-align: center; color: #aaa; font-size: 12px; }
     </style>
 </head>
 <body>
@@ -97,21 +101,18 @@
 </header>
 
 <div class="container">
-    <h2 style="color: var(--soft-blue);">Вітаємо!</h2>
-    <p>Тут ви можете подати заявку на участь у культурних заходах Черкащини.</p>
+    <h2 style="color: var(--soft-blue); margin-bottom: 20px;">Подача заявки на участь</h2>
+    <p>Для того, щоб заповнити анкету учасника, будь ласка, скористайтеся кнопкою нижче.</p>
+    <button onclick="checkAccessAndRedirect()" class="btn btn-blue" style="font-size: 1.1rem; margin-top: 20px;">ПОДАТИ ЗАЯВКУ</button>
 </div>
 
 <div id="authModal" class="modal-overlay">
     <div class="modal-box" id="modalBox">
-        <h3>Авторизація</h3>
-        <p>Для заповнення форми потрібно увійти через Google.</p>
+        <h3 style="color: var(--soft-blue);">Потрібна авторизація</h3>
+        <p>Для доступу до форми заявки необхідно увійти через ваш Google-акаунт.</p>
         <button class="btn btn-blue" onclick="login()">УВІЙТИ</button>
-        <button class="btn" style="background:#ddd; color:#333;" onclick="closeModal()">СКАСУВАТИ</button>
+        <button class="btn btn-cancel" onclick="closeModal()">СКАСУВАТИ</button>
     </div>
-</div>
-
-<div style="text-align: center; margin-bottom: 50px;">
-    <button onclick="checkAccessAndRedirect()" class="btn btn-blue" style="font-size: 1.2rem; padding: 15px 40px;">ПОДАТИ ЗАЯВКУ</button>
 </div>
 
 <footer>
@@ -128,13 +129,17 @@ function checkLoginStatus() {
     const nameFromUrl = params.get('name');
 
     if (nameFromUrl) {
+        // Зберігаємо дані в пам'ять браузера
         localStorage.setItem('userName', decodeURIComponent(nameFromUrl));
+        // Прибираємо ім'я з адресного рядка для чистоти
         window.history.replaceState({}, document.title, window.location.pathname);
         
-        // ОДРАЗУ ВІДКРИВАЄМО ФОРМУ
+        // МИТТЄВИЙ ПЕРЕХІД НА ФОРМУ (без нового вікна, щоб не блокувалося)
         window.location.href = N8N_FORM_URL; 
+        return; // Виходимо з функції, бо вже йде редірект
     }
 
+    // Оновлюємо вигляд кнопки Login
     const savedName = localStorage.getItem('userName');
     const loginBtn = document.getElementById('loginBtn');
     
@@ -146,20 +151,22 @@ function checkLoginStatus() {
     }
 }
 
-// 2. ЗАКРИТТЯ КЛІКОМ МИМО ФОРМИ
+// 2. ЗАКРИТТЯ КЛІКОМ МИМО ТАБЛИЧКИ
 const modalOverlay = document.getElementById('authModal');
-modalOverlay.addEventListener('click', function(event) {
+modalOverlay.addEventListener('mousedown', function(event) {
     const modalBox = document.getElementById('modalBox');
-    // Якщо клік був по оверлею, а не по білій коробці всередині
     if (!modalBox.contains(event.target)) {
         closeModal();
     }
 });
 
+// 3. ЛОГІКА КНОПКИ "ПОДАТИ ЗАЯВКУ"
 function checkAccessAndRedirect() {
     if (localStorage.getItem('userName')) {
-        window.location.href = N8N_FORM_URL; // Відкриваємо в тому ж вікні для надійності
+        // Якщо вже авторизовані - йдемо на форму
+        window.location.href = N8N_FORM_URL;
     } else {
+        // Якщо ні - показуємо гарну табличку
         document.getElementById('authModal').style.display = 'flex';
     }
 }
@@ -183,6 +190,7 @@ function closeModal() {
     document.getElementById('authModal').style.display = 'none';
 }
 
+// Запускаємо при старті
 window.onload = checkLoginStatus;
 </script>
 
