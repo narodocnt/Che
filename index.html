@@ -57,59 +57,62 @@
 </footer>
 
 <script>
-    const FORM_URL = "https://n8n.narodocnt.online/webhook/2e38b09c-9ea5-4123-bdf0-b26dfdf7432c/n8n-form";
-    const AUTH_URL = "https://accounts.google.com/o/oauth2/v2/auth?client_id=734541752522-bqp7ljgjq27k8psn3pv6g3c3rcp16fhi.apps.googleusercontent.com&redirect_uri=https://n8n.narodocnt.online/webhook/google-signup&response_type=code&scope=openid%20email%20profile&prompt=consent";
+const FORM_URL = "https://n8n.narodocnt.online/webhook/2e38b09c-9ea5-4123-bdf0-b26dfdf7432c/n8n-form";
+const AUTH_URL = "https://accounts.google.com/o/oauth2/v2/auth?client_id=734541752522-bqp7ljgjq27k8psn3pv6g3c3rcp16fhi.apps.googleusercontent.com&redirect_uri=https://n8n.narodocnt.online/webhook/google-signup&response_type=code&scope=openid%20email%20profile&prompt=consent";
 
-    // ПЕРЕВІРКА ПРИ ЗАВАНТАЖЕННІ
-    (function init() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const name = urlParams.get('name');
+(function init() {
+    const urlParams = new URLSearchParams(window.location.search);
+    let name = urlParams.get('name');
 
-        if (name) {
-            localStorage.setItem('user', decodeURIComponent(name));
-            // МИТТЄВИЙ ПЕРЕХІД БЕЗ ЗАЙВИХ ПИТАНЬ
-            window.location.replace(FORM_URL);
-            return;
+    // Перевірка, щоб не записати технічне повідомлення n8n замість імені
+    if (name && (name.includes('Workflow') || name.includes('{'))) {
+        name = "Користувач"; 
+    }
+
+    if (name) {
+        localStorage.setItem('user', decodeURIComponent(name));
+        window.history.replaceState({}, document.title, window.location.pathname);
+        
+        // Якщо повернулися від Google — миттєво на форму
+        // Якщо від самої форми — залишаємося на сайті
+        if (!document.referrer.includes('n8n-form')) {
+            window.location.href = FORM_URL;
         }
+    }
 
-        const savedUser = localStorage.getItem('user');
-        if (savedUser) {
-            const btn = document.getElementById('loginBtn');
+    const savedUser = localStorage.getItem('user');
+    if (savedUser) {
+        const btn = document.getElementById('loginBtn');
+        if (btn) {
             btn.innerText = savedUser;
-            btn.style.background = "#a3b18a";
+            btn.style.background = "#a3b18a"; // пастельний зелений
             btn.style.color = "white";
             btn.style.borderColor = "#a3b18a";
         }
-    })();
+    }
+})();
 
-    function goToForm() {
-        if (localStorage.getItem('user')) {
-            window.location.href = FORM_URL;
-        } else {
-            document.getElementById('authModal').style.display = 'flex';
+function goToForm() {
+    if (localStorage.getItem('user')) {
+        window.location.href = FORM_URL;
+    } else {
+        document.getElementById('authModal').style.display = 'flex';
+    }
+}
+
+function startLogin() { window.location.href = AUTH_URL; }
+function closeModal() { document.getElementById('authModal').style.display = 'none'; }
+
+function handleAuth() {
+    if (localStorage.getItem('user')) {
+        if (confirm("Вийти з системи?")) {
+            localStorage.removeItem('user');
+            location.reload();
         }
+    } else {
+        startLogin();
     }
-
-    function startLogin() {
-        window.location.href = AUTH_URL;
-    }
-
-    function closeModal(e) {
-        if (!e || e.target.id === 'authModal' || e === null) {
-            document.getElementById('authModal').style.display = 'none';
-        }
-    }
-
-    function handleAuth() {
-        if (localStorage.getItem('user')) {
-            if (confirm("Вийти?")) {
-                localStorage.removeItem('user');
-                location.reload();
-            }
-        } else {
-            startLogin();
-        }
-    }
+}
 </script>
 
 </body>
