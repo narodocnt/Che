@@ -181,42 +181,69 @@
 </footer>
 
 <script>
-    const FORM_URL = "https://n8n.narodocnt.online/webhook/2e38b09c-9ea5-4123-bdf0-b26dfdf7432c/n8n-form";
-    const AUTH_URL = "https://accounts.google.com/o/oauth2/v2/auth?client_id=734541752522-bqp7ljgjq27k8psn3pv6g3c3rcp16fhi.apps.googleusercontent.com&redirect_uri=https://n8n.narodocnt.online/webhook/google-signup&response_type=code&scope=openid%20email%20profile&prompt=consent";
+ const GOOGLE_AUTH_URL = "https://accounts.google.com/o/oauth2/v2/auth?client_id=734541752522-bqp7ljgjq27k8psn3pv6g3c3rcp16fhi.apps.googleusercontent.com&redirect_uri=https://n8n.narodocnt.online/webhook/google-signup&response_type=code&scope=openid%20email%20profile&prompt=consent";
+const N8N_FORM_URL = "https://n8n.narodocnt.online/webhook/2e38b09c-9ea5-4123-bdf0-b26dfdf7432c/n8n-form";
 
-    // ПЕРЕВІРКА ПРИ ЗАВАНТАЖЕННІ
-    window.onload = function() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const name = urlParams.get('name');
-        if (name) {
-            localStorage.setItem('user_name', decodeURIComponent(name));
-            window.history.replaceState({}, document.title, "/");
+// 1. ФУНКЦІЯ ПЕРЕВІРКИ СТАТУСУ (запускається при кожному завантаженні сторінки)
+function checkLoginStatus() {
+    const params = new URLSearchParams(window.location.search);
+    const nameFromUrl = params.get('name');
+
+    // Якщо ми прийшли від n8n з іменем в URL
+    if (nameFromUrl) {
+        localStorage.setItem('userName', decodeURIComponent(nameFromUrl));
+        // Очищуємо URL, щоб при оновленні сторінки ім'я не зникало
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
+
+    // Оновлюємо текст кнопки в шапці
+    const savedName = localStorage.getItem('userName');
+    const loginBtn = document.getElementById('loginBtn');
+    
+    if (savedName) {
+        loginBtn.innerText = savedName;
+        loginBtn.style.background = "#a3b18a"; // Змінюємо колір на "активний", якщо увійшли
+        loginBtn.style.color = "white";
+    } else {
+        loginBtn.innerText = "Login";
+    }
+}
+
+// 2. ЛОГІКА КНОПКИ ПОДАТИ ЗАЯВКУ
+function checkAccessAndRedirect() {
+    const userIsLoggedIn = localStorage.getItem('userName');
+
+    if (userIsLoggedIn) {
+        // Якщо користувач авторизований - ВІДКРИВАЄМО ФОРМУ
+        window.open(N8N_FORM_URL, '_blank');
+    } else {
+        // Якщо ні - ПОКАЗУЄМО МОДАЛКУ
+        document.getElementById('authModal').style.display = 'flex';
+    }
+}
+
+// 3. ЛОГІКА КНОПКИ LOGIN У ШАПЦІ
+function handleAuthAction() {
+    if (localStorage.getItem('userName')) {
+        if (confirm("Вийти з системи?")) {
+            localStorage.removeItem('userName');
+            location.reload();
         }
-        
-        const savedName = localStorage.getItem('user_name');
-        if (savedName) document.getElementById('loginLabel').innerText = savedName;
+    } else {
+        window.location.href = GOOGLE_AUTH_URL;
     }
+}
 
-    function handleAuth() {
-        if (localStorage.getItem('user_name')) {
-            if (confirm("Вийти?")) {
-                localStorage.removeItem('user_name');
-                location.reload();
-            }
-        } else { login(); }
-    }
+function login() {
+    window.location.href = GOOGLE_AUTH_URL;
+}
 
-    function login() { window.location.href = AUTH_URL; }
+function closeModal() {
+    document.getElementById('authModal').style.display = 'none';
+}
 
-    function handleApplication() {
-        if (localStorage.getItem('user_name')) {
-            window.location.href = FORM_URL;
-        } else {
-            document.getElementById('authModal').style.display = 'flex';
-        }
-    }
-
-    function closeModal() { document.getElementById('authModal').style.display = 'none'; }
+// Запускаємо перевірку відразу при завантаженні
+window.onload = checkLoginStatus;
 </script>
 
 </body>
