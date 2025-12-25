@@ -64,20 +64,15 @@ const AUTH_URL = "https://accounts.google.com/o/oauth2/v2/auth?client_id=7345417
     const urlParams = new URLSearchParams(window.location.search);
     let name = urlParams.get('name');
 
-    // Перевірка, щоб не записати технічне повідомлення n8n замість імені
-    if (name && (name.includes('Workflow') || name.includes('{'))) {
-        name = "Користувач"; 
+    // Очищення від технічних відповідей n8n
+    if (name && (name.includes('Workflow') || name.includes('{') || name.includes('started'))) {
+        name = "Заявка прийнята"; 
     }
 
     if (name) {
         localStorage.setItem('user', decodeURIComponent(name));
+        // Видаляємо параметри з адресного рядка, щоб не муляли око
         window.history.replaceState({}, document.title, window.location.pathname);
-        
-        // Якщо повернулися від Google — миттєво на форму
-        // Якщо від самої форми — залишаємося на сайті
-        if (!document.referrer.includes('n8n-form')) {
-            window.location.href = FORM_URL;
-        }
     }
 
     const savedUser = localStorage.getItem('user');
@@ -85,9 +80,8 @@ const AUTH_URL = "https://accounts.google.com/o/oauth2/v2/auth?client_id=7345417
         const btn = document.getElementById('loginBtn');
         if (btn) {
             btn.innerText = savedUser;
-            btn.style.background = "#a3b18a"; // пастельний зелений
+            btn.style.background = "#a3b18a"; 
             btn.style.color = "white";
-            btn.style.borderColor = "#a3b18a";
         }
     }
 })();
