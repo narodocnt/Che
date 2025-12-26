@@ -4,12 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Відділ народної творчості Черкаського ОЦНТ</title>
-    <link rel="icon" type="image/png" href="фото_для_боту.png>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <link rel="icon" type="image/png" href="фото_для_боту.png">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
     <style>
         :root { 
-            --primary: #1e272e; /* Темний для читабельності */
-            --accent: #e67e22;  /* Контрастний помаранчевий */
+            --primary: #1e272e; 
+            --accent: #e67e22;  
             --bg: #f5f6fa; 
             --nav: #2f3640;
         }
@@ -27,7 +30,18 @@
         .logo-text h1 { font-size: 1.2rem; margin: 0; color: #2c3e50; }
         .logo-text p { font-size: 0.9rem; margin: 0; color: #7f8c8d; }
 
-        .auth-btn { cursor: pointer; padding: 10px 25px; border: 2px solid var(--nav); border-radius: 25px; font-weight: bold; transition: 0.3s; }
+        /* Контейнер для кнопок праворуч */
+        .header-right { display: flex; align-items: center; gap: 20px; }
+        
+        /* Соцмережі у хедері */
+        .header-socials { display: flex; gap: 15px; }
+        .header-socials a { font-size: 1.5rem; color: var(--nav); transition: 0.3s; }
+        .header-socials a:hover { transform: scale(1.1); }
+        .header-socials .fa-telegram:hover { color: #0088cc; }
+        .header-socials .fa-facebook:hover { color: #1877f2; }
+        .header-socials .fa-youtube:hover { color: #ff0000; }
+
+        .auth-btn { cursor: pointer; padding: 10px 25px; border: 2px solid var(--nav); border-radius: 25px; font-weight: bold; transition: 0.3s; background: white; }
         .auth-btn:hover { background: var(--nav); color: white; }
 
         /* Навігація */
@@ -66,9 +80,12 @@
             text-decoration: none; font-weight: bold; border: none; font-size: 1.1rem; cursor: pointer;
         }
 
-        footer { background: white; padding: 40px; margin-top: 50px; text-align: center; border-top: 2px solid #eee; }
-        .socials a { font-size: 2rem; margin: 0 15px; color: var(--nav); transition: 0.3s; }
-        .socials a:hover { color: var(--accent); transform: translateY(-5px); }
+        /* Футер */
+        footer { background: #2f3640; padding: 50px 20px; margin-top: 50px; text-align: center; color: white; }
+        footer a { color: #f1c40f; text-decoration: none; }
+        .footer-socials { display: flex; justify-content: center; gap: 25px; margin-top: 20px; }
+        .footer-socials a { font-size: 2.2rem; color: white; transition: 0.3s; }
+        .footer-socials a:hover { transform: translateY(-5px); color: #f1c40f; }
     </style>
 </head>
 <body>
@@ -81,7 +98,15 @@
             <p>Черкаського ОЦНТ</p>
         </div>
     </div>
-    <div class="auth-btn" id="loginBtn" onclick="handleAuth()">Увійти</div>
+    
+    <div class="header-right">
+        <div class="header-socials">
+            <a href="https://t.me/narodocnt_bot" target="_blank"><i class="fab fa-telegram"></i></a>
+            <a href="https://www.facebook.com/profile.php?id=100063544111305" target="_blank"><i class="fab fa-facebook"></i></a>
+            <a href="https://www.youtube.com/@Cherkasy_OCNT" target="_blank"><i class="fab fa-youtube"></i></a>
+        </div>
+        <div class="auth-btn" id="loginBtn" onclick="handleAuth()">Увійти</div>
+    </div>
 </header>
 
 <nav>
@@ -114,18 +139,12 @@
 
 <footer id="contacts">
     <h3>Наші контакти</h3>
-    <p><i class="fas fa-envelope"></i> Email: <a href="mailto:narodocnt@ukr.net" style="color: white; text-decoration: none;"><b>narodocnt@ukr.net</b></a></p>
+    <p><i class="fas fa-envelope"></i> Email: <a href="mailto:narodocnt@ukr.net"><b>narodocnt@ukr.net</b></a></p>
     
-    <div class="socials">
-        <a href="https://t.me/narodocnt_bot" target="_blank" title="Telegram">
-            <i class="fab fa-telegram"></i>
-        </a>
-        <a href="https://www.facebook.com/profile.php?id=100063544111305" target="_blank" title="Facebook">
-            <i class="fab fa-facebook"></i>
-        </a>
-        <a href="https://www.youtube.com/@Cherkasy_OCNT" target="_blank" title="YouTube">
-            <i class="fab fa-youtube"></i>
-        </a>
+    <div class="footer-socials">
+        <a href="https://t.me/narodocnt_bot" target="_blank"><i class="fab fa-telegram"></i></a>
+        <a href="https://www.facebook.com/profile.php?id=100063544111305" target="_blank"><i class="fab fa-facebook"></i></a>
+        <a href="https://www.youtube.com/@Cherkasy_OCNT" target="_blank"><i class="fab fa-youtube"></i></a>
     </div>
     <p style="margin-top: 30px; font-size: 0.8rem; opacity: 0.6;">© 2025 Відділ народної творчості Черкаського ОЦНТ</p>
 </footer>
@@ -137,9 +156,12 @@
     const AUTH_URL = "https://accounts.google.com/o/oauth2/v2/auth?client_id=734541752522-bqp7ljgjq27k8psn3pv6g3c3rcp16fhi.apps.googleusercontent.com&redirect_uri=https://n8n.narodocnt.online/webhook/google-signup&response_type=code&scope=openid%20email%20profile&prompt=consent";
 
     function openCollectives(genre) {
-        // Дані беруться з підключеного файлу collectives.js
-        document.getElementById('listContent').innerHTML = collectivesData[genre];
-        document.getElementById('listModal').style.display = 'flex';
+        if (typeof collectivesData !== 'undefined') {
+            document.getElementById('listContent').innerHTML = collectivesData[genre];
+            document.getElementById('listModal').style.display = 'flex';
+        } else {
+            alert("Помилка завантаження даних. Перевірте наявність файлу collectives.js");
+        }
     }
 
     function goToForm() {
@@ -160,7 +182,6 @@
         } else { window.location.href = AUTH_URL; }
     }
 
-    // Автоматичне розпізнавання імені після входу
     window.onload = function() {
         const urlParams = new URLSearchParams(window.location.search);
         let name = urlParams.get('name');
