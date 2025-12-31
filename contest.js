@@ -1,107 +1,150 @@
+/**
+ * contest.js - Живий бенчмарк для фестивалю "Музична Варта"
+ */
+
 let currentData = [];
 let lastWinner = null;
 
+// Функція завантаження даних із вашого n8n
 async function loadRanking() {
     const N8N_GET_RANKING_URL = "https://n8n.narodocnt.online/webhook/get-ranking";
+    
     try {
         const response = await fetch(N8N_GET_RANKING_URL);
-        currentData = await response.json();
+        const rawData = await response.json();
+        
+        // 1. Очищення від дублікатів (за посиланням на пост)
+        // 2. Перетворення рядків у числа для надійності
+        currentData = Array.from(new Map(rawData.map(item => [item.url, item])).values())
+            .map(item => ({
+                ...item,
+                likes: parseInt(item.likes) || 0,
+                comments: parseInt(item.comments) || 0,
+                shares: parseInt(item.shares) || 0
+            }));
+        
+        // Початковий рендер: режим "Всі разом"
         renderList('total'); 
     } catch (error) {
-        console.error("Помилка:", error);
+        console.error("Помилка завантаження рейтингу:", error);
+        const list = document.getElementById('rankingList');
+        if (list) list.innerHTML = "<p style='text-align:center;'>Триває оновлення даних, зачекайте кілька секунд...</p>";
     }
 }
 
+// Функція запуску конфетті
 function celebrate() {
-    const duration = 3 * 1000;
-    const end = Date.now() + duration;
+    if (typeof confetti === 'function') {
+        const duration = 3 * 1000;
+        const end = Date.now() + duration;
 
-    (function frame() {
-        confetti({
-            particleCount: 3,
-            angle: 60,
-            spread: 55,
-            origin: { x: 0 },
-            colors: ['#e67e22', '#f1c40f']
-        });
-        confetti({
-            particleCount: 3,
-            angle: 120,
-            spread: 55,
-            origin: { x: 1 },
-            colors: ['#e67e22', '#f1c40f']
-        });
+        (function frame() {
+            confetti({
+                particleCount: 5,
+                angle: 60,
+                spread: 55,
+                origin: { x: 0, y: 0.7 },
+                colors: ['#e67e22', '#f1c40f', '#1877f2']
+            });
+            confetti({
+                particleCount: 5,
+                angle: 120,
+                spread: 55,
+                origin: { x: 1, y: 0.7 },
+                colors: ['#e67e22', '#f1c40f', '#1877f2']
+            });
 
-        if (Date.now() < end) {
-            requestAnimationFrame(frame);
-        }
-    }());
+            if (Date.now() < end) {
+                requestAnimationFrame(frame);
+            }
+        }());
+    }
 }
 
+// Головна функція створення списку
 function renderList(filter = 'total') {
     const list = document.getElementById('rankingList');
     if (!list) return;
     
-    list.innerHTML = '';
-
-    // Сортування
+    // Сортування залежно від обраного тригера
     let sorted = [...currentData].sort((a, b) => {
-        const getVal = (item) => {
-            const l = parseInt(item.likes) || 0;
-            const c = parseInt(item.comments) || 0;
-            const s = parseInt(item.shares) || 0;
-            if (filter === 'likes') return l;
-            if (filter === 'comments') return c;
-            if (filter === 'shares') return s;
-            return l + c + s;
+        const getScore = (item) => {
+            if (filter === 'likes') return item.likes;
+            if (filter === 'comments') return item.comments;
+            if (filter === 'shares') return item.shares;
+            return item.likes + item.comments + item.shares; // Режим "Total"
         };
-        return getVal(b) - getVal(a);
+        return getScore(b) - getScore(a);
     });
 
-    // Перевірка на зміну лідера для запуску конфетті
-    const currentWinner = sorted[0]?.url;
-    if (lastWinner && lastWinner !== currentWinner) {
-        celebrate();
-    }
-    lastWinner = currentWinner;
-
-    // Створення кнопок-тригерів (якщо їх ще немає в HTML)
-    const tabsContainer = document.querySelector('.ranking-tabs');
-    if (tabsContainer) {
-        tabsContainer.querySelectorAll('.tab-btn').forEach(btn => {
-            btn.classList.toggle('active', btn.getAttribute('onclick').includes(filter));
-        });
+    // Перевірка на зміну абсолютного лідера (для конфетті)
+    if (sorted.length > 0) {
+        const currentWinner = sorted[0].url;
+        if (lastWinner && lastWinner !== currentWinner) {
+            celebrate();
+        }
+        lastWinner = currentWinner;
     }
 
+    // Підсвічування активної кнопки
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        // Очищаємо всі активні класи
+        btn.classList.remove('active');
+        // Додаємо активний клас лише натиснутій кнопці
+        if (btn.getAttribute('onclick').includes(`'${filter}'`)) {
+            btn.classList.add('active');
+        }
+    });
+
+    list.innerHTML = '';
+
+    // Знаходимо максимальне значення для прогрес-бару (мінімум 1 щоб не ділити на 0)
     const maxVal = Math.max(...sorted.map(item => {
-        const l = parseInt(item.likes) || 0;
-        const c = parseInt(item.comments) || 0;
-        const s = parseInt(item.shares) || 0;
-        return filter === 'total' ? (l + c + s) : (parseInt(item[filter]) || 1);
+        if (filter === 'likes') return item.likes;
+        if (filter === 'comments') return item.comments;
+        if (filter === 'shares') return item.shares;
+        return item.likes + item.comments + item.shares;
     })) || 1;
 
     sorted.forEach((item, index) => {
-        const l = parseInt(item.likes) || 0;
-        const c = parseInt(item.comments) || 0;
-        const s = parseInt(item.shares) || 0;
-        const currentVal = filter === 'total' ? (l + c + s) : (parseInt(item[filter]) || 0);
-        const percentage = (currentVal / maxVal) * 100;
+        const score = filter === 'likes' ? item.likes : 
+                      filter === 'comments' ? item.comments : 
+                      filter === 'shares' ? item.shares : 
+                      (item.likes + item.comments + item.shares);
         
-        const isTop = index < 3 ? `top-${index}` : '';
-        const medals = ['🥇', '🥈', '🥉'];
-        const medalLabel = index < 3 ? medals[index] : `#${index + 1}`;
+        const percentage = (score / maxVal) * 100;
+        
+        // Візуалізація медалей ТОП-3
+        const medalIcons = ['🥇', '🥈', '🥉'];
+        const medal = index < 3 ? medalIcons[index] : `#${index + 1}`;
+        const topClass = index < 3 ? `top-${index}` : '';
+
+        // Обробка назви: якщо pageName порожня в таблиці
+        const nameText = item.pageName && item.pageName.trim() !== "" 
+            ? item.pageName 
+            : `Колектив (пост №${item.row_number})`;
+
+        // Обробка мініатюри: якщо media порожня в таблиці
+        const photoUrl = item.media && item.media.startsWith('http') 
+            ? item.media 
+            : 'фото_для_боту.png';
 
         list.innerHTML += `
-            <div class="rank-card ${isTop}">
-                <div class="medal">${medalLabel}</div>
-                <img src="${item.media || 'фото_для_боту.png'}" class="rank-photo">
+            <div class="rank-card ${topClass}">
+                <div class="medal">${medal}</div>
+                <div class="photo-container">
+                    <img src="${photoUrl}" 
+                         class="rank-photo" 
+                         onerror="this.src='фото_для_боту.png'" 
+                         alt="thumbnail">
+                </div>
                 <div class="rank-details">
                     <div class="rank-header">
-                        <span class="rank-name">${item.pageName || 'Колектив'}</span>
+                        <span class="rank-name" title="${nameText}">${nameText}</span>
                         <span class="metric-info">
-                            ${filter === 'total' ? `🔥 ${currentVal}` : 
-                              filter === 'likes' ? `❤️ ${l}` : 
-                              filter === 'comments' ? `💬 ${c}` : `🔄 ${s}`}
+                            ${filter === 'total' ? `🔥 ${score}` : 
+                              filter === 'likes' ? `❤️ ${item.likes}` : 
+                              filter === 'comments' ? `💬 ${item.comments}` : `🔄 ${item.shares}`}
                         </span>
                     </div>
                     <div class="progress-wrapper">
@@ -114,4 +157,5 @@ function renderList(filter = 'total') {
     });
 }
 
+// Запуск при завантаженні сторінки
 document.addEventListener('DOMContentLoaded', loadRanking);
