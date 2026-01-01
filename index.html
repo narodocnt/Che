@@ -174,37 +174,60 @@
 <script src="contest.js"></script>
 
 <script>
+    // --- Константи для авторизації ---
     const FORM_URL = "https://n8n.narodocnt.online/webhook/2e38b09c-9ea5-4123-bdf0-b26dfdf7432c/n8n-form";
     const AUTH_URL = "https://accounts.google.com/o/oauth2/v2/auth?client_id=734541752522-bqp7ljgjq27k8psn3pv6g3c3rcp16fhi.apps.googleusercontent.com&redirect_uri=https://n8n.narodocnt.online/webhook/google-signup&response_type=code&scope=openid%20email%20profile&prompt=consent";
 
+    // --- Ваші існуючі функції (НЕ ВИДАЛЯТИ) ---
     function openCollectives(genre) {
         if (typeof collectivesData !== 'undefined') {
             document.getElementById('listContent').innerHTML = collectivesData[genre];
             document.getElementById('listModal').style.display = 'flex';
-        } else {
-            alert("Помилка завантаження даних. Перевірте наявність файлу collectives.js");
-        }
+        } else { alert("Помилка завантаження даних"); }
     }
 
     function goToForm() {
-        if (localStorage.getItem('user')) {
-            window.location.href = FORM_URL;
-        } else {
-            alert("Будь ласка, увійдіть через Google для подачі заявки");
-            window.location.href = AUTH_URL;
-        }
+        if (localStorage.getItem('user')) { window.location.href = FORM_URL; } 
+        else { alert("Будь ласка, увійдіть"); window.location.href = AUTH_URL; }
     }
 
     function handleAuth() {
         if (localStorage.getItem('user')) {
-            if (confirm("Вийти?")) {
-                localStorage.removeItem('user');
-                location.reload();
-            }
+            if (confirm("Вийти?")) { localStorage.removeItem('user'); location.reload(); }
         } else { window.location.href = AUTH_URL; }
     }
 
+    // --- ФУНКЦІЯ ДЛЯ БИТВИ ВПОДОБАЙКІВ ---
+    async function loadBattleData() {
+        // ЗАМІНІТЬ ЦЕ ПОСИЛАННЯ НА ВАШЕ (з n8n або Google JSON)
+        const SHEET_URL = 'https://n8n.narodocnt.online/webhook/your-data-link'; 
+
+        try {
+            const response = await fetch(SHEET_URL);
+            const data = await response.json();
+
+            // 1. Виводимо назву фестивалю (беремо з поля festival_title)
+            if (data.length > 0 && data[0].festival_title) {
+                document.getElementById('festival-title').innerText = data[0].festival_title;
+            }
+
+            // 2. Виводимо всі картки (pageName, likes, url)
+            const container = document.getElementById('cards-container');
+            if (container) {
+                container.innerHTML = data.map(item => `
+                    <div class="card" style="border: 1px solid #ddd; margin: 10px; padding: 15px; border-radius: 10px; width: 250px; text-align: center;">
+                        <h3 style="font-size: 1.1rem; min-height: 3em;">${item.pageName || 'Колектив'}</h3>
+                        <div style="color: #ff4500; font-weight: bold; font-size: 1.2rem; margin: 10px 0;">🔥 ${item.likes || 0}</div>
+                        <a href="${item.url}" target="_blank" style="padding: 8px 15px; background: #007bff; color: white; border-radius: 5px; text-decoration: none; display: block;">Дивитись відео</a>
+                    </div>
+                `).join('');
+            }
+        } catch (e) { console.error("Помилка завантаження Битви:", e); }
+    }
+
+    // Запуск при завантаженні сторінки
     window.onload = function() {
+        // Стара логіка авторизації
         const urlParams = new URLSearchParams(window.location.search);
         let name = urlParams.get('name');
         if (name) {
@@ -214,10 +237,11 @@
         const user = localStorage.getItem('user');
         if (user) {
             const btn = document.getElementById('loginBtn');
-            btn.innerText = user;
-            btn.style.background = "#27ae60";
-            btn.style.color = "white";
+            if(btn) { btn.innerText = user; btn.style.background = "#27ae60"; btn.style.color = "white"; }
         }
+
+        // Завантаження Битви вподобайків
+        loadBattleData();
     }
 </script>
 </body>
