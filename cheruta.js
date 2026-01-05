@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function() {
         newBanner.innerHTML = `
             <img src="cheruta.jpg" alt="Червона Рута 2026" style="width: 100%; height: auto; display: block;">
             <div style="position: absolute; bottom: 15px; left: 0; right: 0; display: flex; justify-content: space-between; padding: 0 20px; gap: 15px;">
-                <a href="URL_ПОЛОЖЕННЯ" target="_blank" class="cheruta-btn btn-left">ЧИТАТИ ПОЛОЖЕННЯ</a>
+                <a href="ruta-2026_polozhennia" target="_blank" class="cheruta-btn btn-left">ЧИТАТИ ПОЛОЖЕННЯ</a>
                 <button id="openFormBtn" class="cheruta-btn btn-right">ПОДАТИ ЗАЯВКУ</button>
             </div>
             <style>
