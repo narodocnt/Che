@@ -4,218 +4,84 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Відділ народної творчості Черкаського ОЦНТ</title>
-    
     <link rel="icon" type="image/png" href="фото_для_боту.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
     <link rel="stylesheet" href="contest.css">
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-        
     <style>
-        :root { 
-            --primary: #1e272e; 
-            --accent: #e67e22;  
-            --bg: #f5f6fa; 
-            --nav: #2f3640;
-        }
-
+        :root { --primary: #1e272e; --accent: #e67e22; --bg: #f5f6fa; --nav: #2f3640; }
         body { font-family: 'Segoe UI', sans-serif; margin: 0; background: var(--bg); color: var(--primary); }
-        
-        /* Хедер */
-        header { 
-            background: white; padding: 10px 5%; 
-            display: flex; justify-content: space-between; align-items: center; 
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; 
-        }
+        header { background: white; padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
         .logo-box { display: flex; align-items: center; gap: 15px; }
         .logo-img { height: 70px; border-radius: 8px; }
-        .logo-text h1 { font-size: 1.2rem; margin: 0; color: #2c3e50; }
-        .logo-text p { font-size: 0.9rem; margin: 0; color: #7f8c8d; }
-
+        .logo-text h1 { font-size: 1.2rem; margin: 0; }
         .header-right { display: flex; align-items: center; gap: 20px; }
-        .header-socials { display: flex; gap: 15px; }
-        .header-socials a { font-size: 1.5rem; color: var(--nav); transition: 0.3s; }
-        .header-socials a:hover { transform: scale(1.1); }
-        .header-socials .fa-telegram:hover { color: #0088cc; }
-        .header-socials .fa-facebook:hover { color: #1877f2; }
-        .header-socials .fa-youtube:hover { color: #ff0000; }
-
-        .auth-btn { cursor: pointer; padding: 10px 25px; border: 2px solid var(--nav); border-radius: 25px; font-weight: bold; transition: 0.3s; background: white; }
+        .auth-btn { cursor: pointer; padding: 10px 25px; border: 2px solid var(--nav); border-radius: 25px; font-weight: bold; transition: 0.3s; }
         .auth-btn:hover { background: var(--nav); color: white; }
-
-        /* Навігація */
         nav { background: var(--nav); display: flex; justify-content: center; }
-        nav a, .dropbtn { 
-            color: white; padding: 15px 25px; text-decoration: none; font-weight: 600; 
-            border: none; background: none; cursor: pointer; font-size: 16px;
-        }
-        nav a:hover, .dropdown:hover .dropbtn { background: #485460; color: #f1c40f; }
-
-        /* Випадаюче меню */
-        .dropdown { position: relative; }
-        .dropdown-content {
-            display: none; position: absolute; background: white; min-width: 240px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.2); z-index: 1001; text-align: left;
-        }
-        .dropdown-content a { color: var(--primary); display: block; padding: 12px 20px; border-bottom: 1px solid #eee; }
-        .dropdown-content a:hover { background: #f1f1f1; }
-        .dropdown:hover .dropdown-content { display: block; }
-
-        /* Модальне вікно */
-        .modal-list { 
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center;
-        }
-        .modal-body { 
-            background: white; padding: 30px; border-radius: 15px; width: 90%; max-width: 800px; 
-            max-height: 80vh; overflow-y: auto; position: relative;
-        }
-        .close-btn { position: sticky; top: 0; float: right; font-size: 25px; cursor: pointer; font-weight: bold; }
-
-        /* Картка */
-        .card { max-width: 700px; margin: 50px auto; background: white; padding: 40px; border-radius: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); text-align: center; }
-        .btn-main { 
-            background: var(--accent); color: white; padding: 15px 40px; border-radius: 30px; 
-            text-decoration: none; font-weight: bold; border: none; font-size: 1.1rem; cursor: pointer;
-        }
-
-        /* Футер */
-        footer { background: #2f3640; padding: 50px 20px; margin-top: 50px; text-align: center; color: white; }
-        footer a { color: #f1c40f; text-decoration: none; }
-        .footer-socials { display: flex; justify-content: center; gap: 25px; margin-top: 20px; }
-        .footer-socials a { font-size: 2.2rem; color: white; transition: 0.3s; }
-        .footer-socials a:hover { transform: translateY(-5px); color: #f1c40f; }
+        nav a, .dropbtn { color: white; padding: 15px 25px; text-decoration: none; font-weight: 600; cursor: pointer; background: none; border: none; font-size: 16px; }
+        .card { max-width: 700px; margin: 30px auto; background: white; padding: 30px; border-radius: 20px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .btn-main { background: var(--accent); color: white; padding: 15px 40px; border-radius: 30px; font-weight: bold; border: none; cursor: pointer; font-size: 1.1rem; }
+        
+        /* Стиль для банера Червона Рута */
+        .ruta-section { background: #000; color: white; padding: 20px; border-radius: 15px; margin: 20px auto; max-width: 800px; text-align: center; }
+        .ruta-btn { background: #ff4500; color: white; padding: 12px 25px; border-radius: 5px; text-decoration: none; display: inline-block; margin-top: 10px; font-weight: bold; border: none; cursor: pointer; }
     </style>
 </head>
 <body>
 
 <header>
     <div class="logo-box">
-        <img src="фото_для_боту.png" alt="Лого" class="logo-img">
-        <div class="logo-text">
-            <h1>Відділ народної творчості</h1>
-            <p>Черкаського ОЦНТ</p>
-        </div>
+        <img src="фото_для_боту.png" class="logo-img">
+        <div class="logo-text"><h1>Відділ народної творчості</h1><p>Черкаського ОЦНТ</p></div>
     </div>
-    
     <div class="header-right">
-        <div class="header-socials">
-            <a href="https://t.me/narodocnt_bot" target="_blank"><i class="fab fa-telegram"></i></a>
-            <a href="https://www.facebook.com/narodocntcherkasy/" target="_blank"><i class="fab fa-facebook"></i></a>
-            <a href="https://www.youtube.com/channel/UCdhef5PwRS8nuwTW8vOFR9A" target="_blank"><i class="fab fa-youtube"></i></a>
-        </div>
         <div class="auth-btn" id="loginBtn" onclick="handleAuth()">Увійти</div>
     </div>
 </header>
 
 <nav>
     <a href="#about">Про нас</a>
-    <div class="dropdown">
-        <button class="dropbtn">Колективи <i class="fa fa-caret-down"></i></button>
-        <div class="dropdown-content">
-            <a href="javascript:void(0)" onclick="openCollectives('choreographic')">Хореографічний</a>
-            <a href="javascript:void(0)" onclick="openCollectives('vocal')">Вокально-хоровий</a>
-            <a href="javascript:void(0)" onclick="openCollectives('theatrical')">Театральний</a>
-            <a href="javascript:void(0)" onclick="openCollectives('instrumental')">Музично-інструментальний</a>
-        </div>
-    </div>
-    <a href="#contacts">Контакти</a>
     <a href="javascript:void(0)" onclick="goToForm()" style="color: #f1c40f;">ПОДАТИ ЗАЯВКУ</a>
 </nav>
 
 <div class="card" id="about">
-    <h2>Подача заявки</h2>
-    <p>Натисніть кнопку, щоб заповнити анкету учасника.</p>
+    <h2>Загальна анкета</h2>
+    <p>Авторизуйтесь, щоб отримати доступ до подачі заявки.</p>
     <button class="btn-main" onclick="goToForm()">ВІДКРИТИ АНКЕТУ</button>
 </div>
 
-<div class="banner-container" style="text-align: center; margin-bottom: 20px;">
-     <img src="./bitva.png" alt="битва вподобайків" style="width: 100%; max-width: 800px; border-radius: 10px;">
-    <h2 style="margin-top: 15px;">🏆 Битва вподобайків</h2>
-    <div id="festival-title" style="font-weight: bold; font-size: 1.2rem; color: #ff9800; text-transform: uppercase;"></div>
+<div class="ruta-section">
+    <img src="ruta_banner.png" style="width:100%; border-radius:10px;" alt="Червона Рута">
+    <h3>ЧЕРВОНА РУТА - 2026</h3>
+    <p>Відбірковий конкурс у Черкасах</p>
+    <button class="ruta-btn" onclick="goToForm()">ПОДАТИ ЗАЯВКУ НА КОНКУРС</button>
 </div>
-    
-<div class="ranking-tabs" style="text-align:center; margin-bottom: 20px;">
-    <button class="tab-btn active" onclick="renderList('total')">🏆 Всі разом</button>
-    <button class="tab-btn" onclick="renderList('likes')">❤️ Лайки</button>
-    <button class="tab-btn" onclick="renderList('comments')">💬 Коментарі</button>
-    <button class="tab-btn" onclick="renderList('shares')">🔄 Поширення</button>
-</div>
-
-<div id="rankingList" class="ranking-container">
-    <p style="text-align:center;">Завантаження результатів...</p>
-</div>
-
-<div id="listModal" class="modal-list" onclick="this.style.display='none'">
-    <div class="modal-body" onclick="event.stopPropagation()">
-        <span class="close-btn" onclick="document.getElementById('listModal').style.display='none'">&times;</span>
-        <div id="listContent"></div>
-    </div>
-</div>
-
-<footer id="contacts">
-    <h3>Наші контакти</h3>
-    <p><i class="fas fa-envelope"></i> Email: <a href="mailto:narodocnt@ukr.net"><b>narodocnt@ukr.net</b></a></p>
-    <div class="footer-socials">
-        <a href="https://t.me/narodocnt_bot" target="_blank"><i class="fab fa-telegram"></i></a>
-        <a href="https://www.facebook.com/profile.php?id=100063544111305" target="_blank"><i class="fab fa-facebook"></i></a>
-        <a href="https://www.youtube.com/@Cherkasy_OCNT" target="_blank"><i class="fab fa-youtube"></i></a>
-    </div>
-    <p style="margin-top: 30px; font-size: 0.8rem; opacity: 0.6;">© 2026 Відділ народної творчості Черкаського ОЦНТ</p>
-</footer>
 
 <script src="collectives.js"></script>
-<script src="contest.js"></script>
-<script src="cheruta.js"></script>
-
 <script>
-    // Посилання
-    const SHEET_URL = 'https://n8n.narodocnt.online/webhook/get-ranking'; 
     const FORM_URL = "https://n8n.narodocnt.online/webhook/2e38b09c-9ea5-4123-bdf0-b26dfdf7432c/n8n-form";
     const AUTH_URL = "https://accounts.google.com/o/oauth2/v2/auth?client_id=734541752522-bqp7ljgjq27k8psn3pv6g3c3rcp16fhi.apps.googleusercontent.com&redirect_uri=https://n8n.narodocnt.online/webhook/google-signup&response_type=code&scope=openid%20email%20profile&prompt=consent";
 
-    // Відновлені функції
     function handleAuth() {
         window.location.href = AUTH_URL;
     }
 
     function goToForm() {
-        window.location.href = FORM_URL;
-    }
-
-    function openCollectives(genre) {
-        // Якщо функція є в collectives.js, вона викличеться. 
-        // Якщо ні - додаємо виклик модалки тут:
-        if (typeof showCollectivesList === 'function') {
-            showCollectivesList(genre);
+        const user = localStorage.getItem('user');
+        if (!user) {
+            alert("Потрібна авторизація через Google");
+            handleAuth();
         } else {
-            console.log("Відкриваємо категорію:", genre);
-            document.getElementById('listModal').style.display = 'flex';
+            window.location.href = FORM_URL;
         }
     }
 
-    async function loadBattleData() {
-        try {
-            const response = await fetch(SHEET_URL);
-            const data = await response.json();
-            const titleElem = document.getElementById('festival-title');
-            if (data.length > 0 && data[0].festival_title) {
-                titleElem.innerText = data[0].festival_title;
-            }
-        } catch (e) {
-            console.error("Помилка завантаження даних битви:", e);
-        }
-    }
-
-    // Безпечний запуск після завантаження всього контенту
     document.addEventListener('DOMContentLoaded', function() {
-        // Перевірка авторизації
+        // Перевірка імені після логіну
         const urlParams = new URLSearchParams(window.location.search);
         let name = urlParams.get('name');
-        if (name) { 
-            localStorage.setItem('user', decodeURIComponent(name)); 
-        }
-        
+        if (name) { localStorage.setItem('user', decodeURIComponent(name)); }
+
         const user = localStorage.getItem('user');
         if (user) {
             const btn = document.getElementById('loginBtn');
@@ -223,12 +89,8 @@
                 btn.innerText = user; 
                 btn.style.background = "#27ae60"; 
                 btn.style.color = "white";
-                btn.style.border = "none";
             }
         }
-
-        // Запуск завантаження даних
-        loadBattleData();
     });
 </script>
 </body>
