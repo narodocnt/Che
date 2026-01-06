@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded", function() {
             data.source = formData.getAll('source').join(', ');
 
             try {
-                const response = await fetch('https://n8n.narodocnt.online/webhook-test/ruta-zayavka', {
+                const response = await fetch('https://n8n.narodocnt.online/webhook/ruta-zayavka', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(data)
