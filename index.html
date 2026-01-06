@@ -125,30 +125,25 @@
 
 <div class="card" id="about">
     <h2>Подача заявки</h2>
-    <p>Натисніть кнопку, щоб заповнити анкету учасника.</p><br>
+    <p>Натисніть кнопку, щоб заповнити анкету учасника.</p>
     <button class="btn-main" onclick="goToForm()">ВІДКРИТИ АНКЕТУ</button>
 </div>
 
 <div class="banner-container" style="text-align: center; margin-bottom: 20px;">
      <img src="./bitva.png" alt="битва вподобайків" style="width: 100%; max-width: 800px; border-radius: 10px;">
-    
     <h2 style="margin-top: 15px;">🏆 Битва вподобайків</h2>
-    
-    <div id="festival-title" style="font-weight: bold; font-size: 1.2rem; color: #ff9800; text-transform: uppercase;">
-
-    </div>
+    <div id="festival-title" style="font-weight: bold; font-size: 1.2rem; color: #ff9800; text-transform: uppercase;"></div>
 </div>
     
-    <div class="ranking-tabs">
-        <button class="tab-btn active" onclick="renderList('total')">🏆 Всі разом</button>
-        <button class="tab-btn" onclick="renderList('likes')">❤️ Лайки</button>
-        <button class="tab-btn" onclick="renderList('comments')">💬 Коментарі</button>
-        <button class="tab-btn" onclick="renderList('shares')">🔄 Поширення</button>
-    </div>
+<div class="ranking-tabs" style="text-align:center; margin-bottom: 20px;">
+    <button class="tab-btn active" onclick="renderList('total')">🏆 Всі разом</button>
+    <button class="tab-btn" onclick="renderList('likes')">❤️ Лайки</button>
+    <button class="tab-btn" onclick="renderList('comments')">💬 Коментарі</button>
+    <button class="tab-btn" onclick="renderList('shares')">🔄 Поширення</button>
+</div>
 
-    <div id="rankingList" class="ranking-container">
-        <p style="text-align:center;">Завантаження результатів...</p>
-    </div>
+<div id="rankingList" class="ranking-container">
+    <p style="text-align:center;">Завантаження результатів...</p>
 </div>
 
 <div id="listModal" class="modal-list" onclick="this.style.display='none'">
@@ -161,81 +156,80 @@
 <footer id="contacts">
     <h3>Наші контакти</h3>
     <p><i class="fas fa-envelope"></i> Email: <a href="mailto:narodocnt@ukr.net"><b>narodocnt@ukr.net</b></a></p>
-    
     <div class="footer-socials">
         <a href="https://t.me/narodocnt_bot" target="_blank"><i class="fab fa-telegram"></i></a>
         <a href="https://www.facebook.com/profile.php?id=100063544111305" target="_blank"><i class="fab fa-facebook"></i></a>
         <a href="https://www.youtube.com/@Cherkasy_OCNT" target="_blank"><i class="fab fa-youtube"></i></a>
     </div>
-    <p style="margin-top: 30px; font-size: 0.8rem; opacity: 0.6;">© 2025 Відділ народної творчості Черкаського ОЦНТ</p>
+    <p style="margin-top: 30px; font-size: 0.8rem; opacity: 0.6;">© 2026 Відділ народної творчості Черкаського ОЦНТ</p>
 </footer>
 
 <script src="collectives.js"></script>
 <script src="contest.js"></script>
-    <script src="cheruta.js"></script>
-   
+<script src="cheruta.js"></script>
 
 <script>
-    // Посилання на ваш Webhook (Production версія)
+    // Посилання
     const SHEET_URL = 'https://n8n.narodocnt.online/webhook/get-ranking'; 
-
-    // --- Ваші існуючі функції авторизації (ЗАЛИШАЄМО) ---
     const FORM_URL = "https://n8n.narodocnt.online/webhook/2e38b09c-9ea5-4123-bdf0-b26dfdf7432c/n8n-form";
     const AUTH_URL = "https://accounts.google.com/o/oauth2/v2/auth?client_id=734541752522-bqp7ljgjq27k8psn3pv6g3c3rcp16fhi.apps.googleusercontent.com&redirect_uri=https://n8n.narodocnt.online/webhook/google-signup&response_type=code&scope=openid%20email%20profile&prompt=consent";
 
-    function openCollectives(genre) { /* ваш старий код */ }
-    function goToForm() { /* ваш старий код */ }
-    function handleAuth() { /* ваш старий код */ }
+    // Відновлені функції
+    function handleAuth() {
+        window.location.href = AUTH_URL;
+    }
 
-    // --- НОВА ФУНКЦІЯ ЗАВАНТАЖЕННЯ БИТВИ ---
+    function goToForm() {
+        window.location.href = FORM_URL;
+    }
+
+    function openCollectives(genre) {
+        // Якщо функція є в collectives.js, вона викличеться. 
+        // Якщо ні - додаємо виклик модалки тут:
+        if (typeof showCollectivesList === 'function') {
+            showCollectivesList(genre);
+        } else {
+            console.log("Відкриваємо категорію:", genre);
+            document.getElementById('listModal').style.display = 'flex';
+        }
+    }
+
     async function loadBattleData() {
         try {
             const response = await fetch(SHEET_URL);
             const data = await response.json();
-
-            // 1. Оновлюємо назву фестивалю (festival_title)
             const titleElem = document.getElementById('festival-title');
             if (data.length > 0 && data[0].festival_title) {
                 titleElem.innerText = data[0].festival_title;
             }
-
-            // 2. Виводимо картки (pageName, likes, url)
-            const container = document.getElementById('cards-container');
-            if (container) {
-                container.innerHTML = data.map(item => `
-                    <div class="card" style="border: 1px solid #ddd; margin: 10px; padding: 15px; border-radius: 10px; width: 280px; background: #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
-                        <h3 style="font-size: 1.1rem; height: 3.5em; overflow: hidden; display: flex; align-items: center; justify-content: center;">
-                            ${item.pageName || 'Колектив'}
-                        </h3>
-                        <div style="color: #ff4500; font-weight: bold; font-size: 1.4rem; margin: 10px 0;">
-                            🔥 ${item.likes || 0}
-                        </div>
-                        <a href="${item.url}" target="_blank" style="display: block; padding: 10px; background: #007bff; color: white; text-decoration: none; border-radius: 5px; font-weight: bold;">
-                            Дивитись відео
-                        </a>
-                    </div>
-                `).join('');
-            }
         } catch (e) {
-            console.error("Помилка завантаження даних:", e);
+            console.error("Помилка завантаження даних битви:", e);
         }
     }
 
-    // Запуск при завантаженні сторінки
-    window.onload = function() {
-        // Логіка авторизації (ваша стара)
+    // Безпечний запуск після завантаження всього контенту
+    document.addEventListener('DOMContentLoaded', function() {
+        // Перевірка авторизації
         const urlParams = new URLSearchParams(window.location.search);
         let name = urlParams.get('name');
-        if (name) { localStorage.setItem('user', decodeURIComponent(name)); }
+        if (name) { 
+            localStorage.setItem('user', decodeURIComponent(name)); 
+        }
+        
         const user = localStorage.getItem('user');
         if (user) {
             const btn = document.getElementById('loginBtn');
-            if(btn) { btn.innerText = user; btn.style.background = "#27ae60"; }
+            if(btn) { 
+                btn.innerText = user; 
+                btn.style.background = "#27ae60"; 
+                btn.style.color = "white";
+                btn.style.border = "none";
+            }
         }
 
-        // ЗАПУСК БИТВИ
+        // Запуск завантаження даних
         loadBattleData();
-    }
+    });
 </script>
 </body>
 </html>
