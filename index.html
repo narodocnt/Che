@@ -4,9 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Відділ народної творчості Черкаського ОЦНТ</title>
+
+    <link rel="stylesheet" href="contest.css">
     
     <link rel="icon" type="image/png" href="фото_для_боту.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="contest.css">
     
     <style>
         :root { --primary: #1e272e; --accent: #e67e22; --bg: #f5f6fa; --nav: #2f3640; }
@@ -24,7 +27,7 @@
         .header-socials a { font-size: 1.4rem; color: var(--nav); transition: 0.3s; }
         .auth-btn { cursor: pointer; padding: 8px 20px; border: 2px solid var(--nav); border-radius: 25px; font-weight: bold; font-size: 0.9rem; }
 
-        /* Навігація та Випадаюче меню */
+        /* Навігація */
         nav { background: var(--nav); display: flex; justify-content: center; position: relative; }
         nav a, .dropbtn { color: white; padding: 15px 20px; text-decoration: none; font-weight: 600; font-size: 14px; cursor: pointer; background: none; border: none; }
         
@@ -33,42 +36,17 @@
             display: none; position: absolute; background-color: white; min-width: 220px; 
             box-shadow: 0px 8px 16px rgba(0,0,0,0.2); z-index: 1001; border-radius: 0 0 8px 8px;
         }
-        .dropdown-content a { color: var(--primary); padding: 12px 16px; display: block; border-bottom: 1px solid #eee; text-align: left; }
-        .dropdown-content a:hover { background-color: #f1f1f1; color: var(--accent); }
+        .dropdown-content a { color: var(--primary); padding: 12px 16px; display: block; border-bottom: 1px solid #eee; text-align: left; text-decoration: none; }
         .dropdown:hover .dropdown-content { display: block; }
-        .dropdown:hover .dropbtn { color: #f1c40f; }
 
-        /* Банери */
-        .banners-wrapper { max-width: 900px; margin: 0 auto; padding: 10px; }
-        .ruta-container { position: relative; width: 100%; border-radius: 15px; overflow: hidden; background: #000; margin-bottom: 25px; box-shadow: 0 5px 20px rgba(0,0,0,0.3); }
-        .ruta-img { width: 100%; display: block; }
-        .ruta-overlay { position: absolute; bottom: 0; width: 100%; display: flex; justify-content: space-between; padding: 15px; box-sizing: border-box; }
-        
-        .sq-btn {
-            width: 85px; height: 85px; border: 2px solid white; border-radius: 12px; font-weight: bold; font-size: 10px; 
-            display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
-            cursor: pointer; line-height: 1.2; background: rgba(0,0,0,0.6); color: white; transition: 0.2s;
-        }
-        .btn-apply { background: #ff4500; border-color: #ff4500; }
-
-        /* БИТВА ВПОДОБАЙКІВ */
-        .bitva-container { width: 100%; background: white; border-radius: 15px; padding: 25px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.05); box-sizing: border-box; }
-        .bitva-img { width: 100%; max-width: 450px; border-radius: 12px; margin-bottom: 20px; }
-        .ranking-list { margin-top: 20px; text-align: left; }
-        .ranking-item { 
-            display: flex; justify-content: space-between; align-items: center; 
-            padding: 12px; border-bottom: 1px solid #eee; background: #fff; margin-bottom: 5px; border-radius: 8px;
-        }
-        .vote-btn { background: #3b5998; color: white; border: none; padding: 10px 18px; border-radius: 6px; cursor: pointer; font-weight: bold; }
-
-        /* Модалка списку */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; }
-        .modal-content { background: white; padding: 25px; border-radius: 15px; width: 90%; max-width: 600px; max-height: 85vh; overflow-y: auto; }
+        /* Контейнери для зовнішніх JS */
+        #ruta-banner-container { position: relative; max-width: 900px; margin: 20px auto; border-radius: 15px; overflow: hidden; min-height: 200px; }
+        .contest-container { max-width: 900px; margin: 20px auto; background: white; padding: 20px; border-radius: 15px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
 
         footer { background: #2f3640; padding: 40px; color: white; text-align: center; margin-top: 50px; }
         .social-icons a { color: white; font-size: 2rem; margin: 0 12px; }
 
-        @media (max-width: 600px) { .sq-btn { width: 75px; height: 75px; font-size: 9px; } .header-socials { display: none; } }
+        @media (max-width: 600px) { .header-socials { display: none; } }
     </style>
 </head>
 <body>
@@ -104,24 +82,12 @@
     <a onclick="goToGeneralForm()" style="color: #f1c40f;">ПОДАТИ ЗАЯВКУ</a>
 </nav>
 
-<div class="banners-wrapper">
-    <div class="ruta-container">
-        <img src="cheruta.jpg" class="ruta-img" alt="Червона Рута"> 
-        <div class="ruta-overlay">
-            <button class="sq-btn" onclick="window.open('https://n8n.narodocnt.online/webhook/get-polozhennya', '_blank')">ЧИТАТИ<br>ПОЛОЖЕННЯ</button>
-            <button class="sq-btn btn-apply" onclick="goToRutaForm()">ПОДАТИ<br>ЗАЯВКУ</button>
-        </div>
-    </div>
+<div id="ruta-banner-container"></div>
 
-    <div class="bitva-container">
-        <img src="bitva.png" class="bitva-img">
-        <h2 id="festival-title" style="color:var(--nav);">🏆 Битва вподобайків</h2>
-        <div id="rankingList" class="ranking-list">
-            <div class="ranking-item">
-                <span>Завантаження актуального рейтингу...</span>
-            </div>
-        </div>
-    </div>
+<div class="contest-container">
+    <img src="bitva.png" style="width:100%; max-width:400px; border-radius:10px; margin-bottom: 15px;">
+    <h2 id="festival-title">🏆 Битва вподобайків</h2>
+    <div id="rankingList">Завантаження рейтингу...</div>
 </div>
 
 <footer id="contacts">
@@ -130,77 +96,79 @@
         <a href="https://www.youtube.com/@Cherkasy_OCNT" target="_blank"><i class="fab fa-youtube"></i></a>
         <a href="https://t.me/narodocnt_bot" target="_blank"><i class="fab fa-telegram"></i></a>
     </div>
-    <p style="margin-top:20px; font-weight: bold;">Email: narodocnt@ukr.net</p>
+    <p style="margin-top:20px;">Email: narodocnt@ukr.net</p>
 </footer>
 
-<div id="listModal" class="modal" onclick="closeModal()">
-    <div class="modal-content" onclick="event.stopPropagation()">
-        <span style="float:right; cursor:pointer; font-size:28px;" onclick="closeModal()">&times;</span>
+<div id="listModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:2000; justify-content:center; align-items:center;" onclick="closeModal()">
+    <div style="background:white; padding:25px; border-radius:15px; width:90%; max-width:600px; position:relative;" onclick="event.stopPropagation()">
+        <span onclick="closeModal()" style="float:right; cursor:pointer; font-size:28px;">&times;</span>
         <div id="modalBody"></div>
     </div>
 </div>
 
 <script src="collectives.js"></script>
-<script src="contest.js"></script>
-<script src="cheruta.js"></script>
+<script src="cheruta.js"></script> <script src="contest.js"></script>
+<script src="bitva.js"></script>
 
-    
 <script>
+    // Новий вебхук для Червоної Рути
+    const RUTA_WEBHOOK = "https://n8n.narodocnt.online/webhook/ruta-zayavka";
     const GENERAL_FORM_URL = "https://n8n.narodocnt.online/webhook/2e38b09c-9ea5-4123-bdf0-b26dfdf7432c/n8n-form";
-    // ВСТАВЛЕНО ВАШ ВЕБХУК:
-    const RUTA_FORM_URL = "https://n8n.narodocnt.online/webhook/chervona-ruta-form"; 
-    
     const AUTH_URL = "https://accounts.google.com/o/oauth2/v2/auth?client_id=734541752522-bqp7ljgjq27k8psn3pv6g3c3rcp16fhi.apps.googleusercontent.com&redirect_uri=https://n8n.narodocnt.online/webhook/google-signup&response_type=code&scope=openid%20email%20profile&prompt=consent";
 
+    // Авторизація та Вихід
     function handleAuthClick() {
         const user = localStorage.getItem('user');
         if (user) {
             if (confirm(`Вийти з аккаунту ${user}?`)) {
-                localStorage.removeItem('user'); location.reload();
+                localStorage.removeItem('user');
+                location.reload();
             }
-        } else { window.location.href = AUTH_URL; }
+        } else {
+            window.location.href = AUTH_URL;
+        }
     }
 
+    // Перехід на загальну форму
     function goToGeneralForm() {
-        if (!localStorage.getItem('user')) { alert("Авторизуйтесь через Google."); handleAuthClick(); }
-        else { window.location.href = GENERAL_FORM_URL; }
+        if (!localStorage.getItem('user')) {
+            alert("Будь ласка, авторизуйтесь.");
+            handleAuthClick();
+        } else {
+            window.location.href = GENERAL_FORM_URL;
+        }
     }
 
-    function goToRutaForm() {
-        if (!localStorage.getItem('user')) { alert("Для реєстрації на Червону Руту потрібна авторизація."); handleAuthClick(); }
-        else { window.location.href = RUTA_FORM_URL; }
-    }
-
+    // Колективи (Випадаюче меню)
     function openGenre(genre) {
         const body = document.getElementById('modalBody');
-        const modal = document.getElementById('listModal');
-        if (typeof collectivesData === 'undefined') return alert("Помилка завантаження бази даних.");
+        if (typeof collectivesData === 'undefined') return alert("База даних не знайдена.");
         
         const list = collectivesData[genre] || [];
         const titles = { vocal: 'Вокальні', choreographic: 'Хореографічні', theatrical: 'Театральні', instrumental: 'Інструментальні' };
         
-        let html = `<h2 style="color:var(--nav); border-bottom:2px solid var(--accent); padding-bottom:10px;">${titles[genre]} колективи</h2>`;
-        if (list.length === 0) html += "<p>Дані оновлюються...</p>";
+        let html = `<h2>${titles[genre]} колективи</h2><hr>`;
         list.forEach(i => {
-            html += `<div style="padding:12px; border-bottom:1px solid #eee;">
-                <b style="font-size:1.1rem;">${i.name}</b><br>
-                <small>Керівник: ${i.leader}</small><br>
-                <button class="vote-btn" style="margin-top:8px; background:#27ae60;" onclick="window.open('${i.fb_link || '#'}')">Перейти до FB</button>
-            </div>`;
+            html += `<div style="padding:10px; border-bottom:1px solid #eee;"><b>${i.name}</b><br>${i.leader}</div>`;
         });
         body.innerHTML = html;
-        modal.style.display = 'flex';
+        document.getElementById('listModal').style.display = 'flex';
     }
 
     function closeModal() { document.getElementById('listModal').style.display = 'none'; }
 
+    // Обробка входу після Google Redirect
     document.addEventListener('DOMContentLoaded', function() {
-        const name = new URLSearchParams(window.location.search).get('name');
+        const params = new URLSearchParams(window.location.search);
+        const name = params.get('name');
         if (name) localStorage.setItem('user', decodeURIComponent(name));
+
         const user = localStorage.getItem('user');
         if (user) {
             const btn = document.getElementById('loginBtn');
-            btn.innerText = user; btn.style.background = "#27ae60"; btn.style.color = "white";
+            btn.innerText = user;
+            btn.style.background = "#27ae60";
+            btn.style.color = "white";
         }
     });
 </script>
