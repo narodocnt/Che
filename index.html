@@ -38,14 +38,13 @@
         .dropdown:hover .dropdown-content { display: block; }
 
         /* Контейнери */
-        #ruta-banner-container { position: relative; max-width: 900px; margin: 20px auto; border-radius: 15px; overflow: hidden; min-height: 300px; background: #eee; }
         .contest-container { max-width: 900px; margin: 20px auto; background: white; padding: 20px; border-radius: 15px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
 
         footer { background: #2f3640; padding: 40px; color: white; text-align: center; margin-top: 50px; }
         .social-icons a { color: white; font-size: 2rem; margin: 0 12px; }
 
-        /* Стиль для модалки з прокруткою */
-        #modalBody { max-height: 70vh; overflow-y: auto; padding-right: 10px; }
+        /* Стиль для модалки колективів */
+        #modalBody { max-height: 70vh; overflow-y: auto; }
 
         @media (max-width: 600px) { .header-socials { display: none; } }
     </style>
@@ -83,7 +82,7 @@
     <a onclick="goToGeneralForm()" style="color: #f1c40f;">ПОДАТИ ЗАЯВКУ</a>
 </nav>
 
-<div id="ruta-banner-container"></div>
+<div id="about"></div>
 
 <div class="contest-container">
     <img src="bitva.png" style="width:100%; max-width:400px; border-radius:10px; margin-bottom: 15px;">
@@ -102,7 +101,7 @@
 
 <div id="listModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:2000; justify-content:center; align-items:center;" onclick="closeModal()">
     <div style="background:white; padding:25px; border-radius:15px; width:90%; max-width:650px; position:relative;" onclick="event.stopPropagation()">
-        <span onclick="closeModal()" style="float:right; cursor:pointer; font-size:28px; font-weight:bold;">&times;</span>
+        <span onclick="closeModal()" style="float:right; cursor:pointer; font-size:28px;">&times;</span>
         <div id="modalBody"></div>
     </div>
 </div>
@@ -116,6 +115,7 @@
     const GENERAL_FORM_URL = "https://n8n.narodocnt.online/webhook/2e38b09c-9ea5-4123-bdf0-b26dfdf7432c/n8n-form";
     const AUTH_URL = "https://accounts.google.com/o/oauth2/v2/auth?client_id=734541752522-bqp7ljgjq27k8psn3pv6g3c3rcp16fhi.apps.googleusercontent.com&redirect_uri=https://n8n.narodocnt.online/webhook/google-signup&response_type=code&scope=openid%20email%20profile&prompt=consent";
 
+    // Авторизація
     function handleAuthClick() {
         const user = localStorage.getItem('user');
         if (user) {
@@ -128,6 +128,7 @@
         }
     }
 
+    // Загальна форма
     function goToGeneralForm() {
         if (!localStorage.getItem('user')) {
             alert("Будь ласка, авторизуйтесь.");
