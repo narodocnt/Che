@@ -1,3 +1,7 @@
+/**
+ * collectives.js - Керування списками колективів (HTML формат)
+ */
+
 const collectivesData = {
     choreographic: `<h2>Хореографічний жанр</h2>
     <ol>
@@ -247,4 +251,22 @@ const collectivesData = {
         <li>Народний аматорський вокально-інструментальний ансамбль “Дніпряни” — Чорнобаївський селищний Будинок культури. Керівник: Соська Віктор Петрович.</li>
         <li>Народний аматорський вокально-інструментальний ансамбль «Мікс» — Маньківський селищний Центр культури та дозвілля. Керівник: Шаповал Ярослав Анатолійович.</li>
     </ol>`
+};
+
+// Функція відкриття модального вікна
+window.openGenre = function(genre) {
+    const modal = document.getElementById('listModal');
+    const body = document.getElementById('modalBody');
+    
+    if (modal && body) {
+        // Просто вставляємо готовий HTML з масиву
+        body.innerHTML = collectivesData[genre] || "<p>Дані відсутні</p>";
+        modal.style.display = 'flex';
+    }
+};
+
+// Функція закриття модального вікна
+window.closeModal = function() {
+    const modal = document.getElementById('listModal');
+    if (modal) modal.style.display = 'none';
 };
