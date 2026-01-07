@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Анкета учасника - Червона Рута 2026</title>
+    <style>
+        body { font-family: sans-serif; background: #f4f4f4; padding: 20px; }
+        .form-card { max-width: 600px; margin: auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        h2 { color: #ff4500; text-align: center; }
+        .field { margin-bottom: 15px; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; font-size: 14px; }
+        input, select, textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+        button { width: 100%; padding: 15px; background: #ff4500; color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; font-weight: bold; margin-top: 20px; }
+        button:hover { background: #e63e00; }
+    </style>
+</head>
+<body>
+    <div class="form-card">
+        <h2>АНКЕТА-ЗАЯВКА</h2>
+        <p style="text-align: center; font-size: 12px;">відбіркового конкурсу "Червона рута" — 2026</p>
+        
+        <form id="rutaForm">
+            <div class="field"><label>1. Прізвище, ім’я, по батькові (соліста або назва гурту):</label><input name="f1" required></div>
+            <div class="field"><label>2. Жанр (поп, рок, акустика тощо):</label><input name="f2" required></div>
+            <div class="field"><label>3. Кількість учасників:</label><input type="number" name="f3" required></div>
+            <div class="field"><label>4. ПІБ керівника (для гуртів):</label><input name="f4"></div>
+            <div class="field"><label>5. Дата народження (учасника або керівника):</label><input type="date" name="f5" required></div>
+            <div class="field"><label>6. Повна домашня адреса:</label><input name="f6" required></div>
+            <div class="field"><label>7. Контактний телефон:</label><input type="tel" name="f7" required></div>
+            <div class="field"><label>8. Електронна пошта (E-mail):</label><input type="email" name="f8" required></div>
+            <div class="field"><label>9. Місце навчання або роботи:</label><input name="f9"></div>
+            <div class="field"><label>10. Технічні вимоги (райдер):</label><textarea name="f10" rows="3"></textarea></div>
+            <div class="field"><label>11. Репертуар (Назва пісні 1, автори):</label><input name="f11" required></div>
+            <div class="field"><label>12. Репертуар (Назва пісні 2, автори):</label><input name="f12" required></div>
+            <div class="field"><label>13. Репертуар (Назва пісні 3, автори):</label><input name="f13" required></div>
+            <div class="field"><label>14. Чи є у вас власні аудіозаписи?</label><select name="f14"><option>Так</option><option>Ні</option></select></div>
+            <div class="field"><label>15. Посилання на відео виступу (якщо є):</label><input name="f15"></div>
+            <div class="field"><label>16. Звідки дізналися про конкурс?</label><input name="f16"></div>
+
+            <button type="submit" id="submitBtn">ВІДПРАВИТИ ЗАЯВКУ</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('rutaForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            btn.innerText = "Відправка...";
+            btn.disabled = true;
+
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData.entries());
+            data.user_name = localStorage.getItem('user'); // Додаємо ім'я з авторизації
+
+            try {
+                // Відправка на ваш вебхук n8n для Червоної Рути
+                await fetch('https://n8n.narodocnt.online/webhook/ruta-zayavka', {
+                    method: 'POST',
+                    body: JSON.stringify(data),
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                alert('Дякуємо! Ваша заявка прийнята.');
+                window.location.href = 'index.html';
+            } catch (err) {
+                alert('Помилка при відправці. Спробуйте ще раз.');
+                btn.disabled = false;
+                btn.innerText = "ВІДПРАВИТИ ЗАЯВКУ";
+            }
+        };
+    </script>
+</body>
+</html>
