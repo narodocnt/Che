@@ -1,91 +1,91 @@
 /**
- * cheruta.js - Скрипт для банера "Червона Рута"
- * Додає таймер та кнопки поверх існуючого HTML-контейнера
+ * cheruta.js - Версія з цифровим годинником (двокрапки)
  */
 
 function initRutaUI() {
-    // 1. Знаходимо ваш контейнер у HTML
     const banner = document.querySelector('.ruta-container');
     if (!banner) return;
 
-    // 2. Створюємо інтерфейс кнопок та таймера
+    const oldUI = document.getElementById('ruta-interface');
+    if (oldUI) oldUI.remove();
+
     const uiHtml = `
     <div id="ruta-interface" style="
         position: absolute; 
         bottom: 0; 
         left: 0; 
         width: 100%; 
-        background: linear-gradient(to top, rgba(0,0,0,0.95), rgba(0,0,0,0.4), transparent); 
-        padding: 15px 0; 
-        display: flex; 
-        align-items: flex-end; 
-        justify-content: space-between;
-        z-index: 10;
+        background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%);
+        padding: 10px 0;
+        display: flex;
+        align-items: center; 
+        justify-content: space-between; 
+        z-index: 100;
     ">
-        <div style="padding-left: 20px; padding-bottom: 5px;">
-            <button onclick="window.open('ruta-2026_polozhennia.pdf', '_blank')" class="ruta-btn btn-secondary">
-                ПОЛОЖЕННЯ
-            </button>
+        <div style="padding-left: 15px;">
+            <button onclick="window.open('/polozhennya.pdf', '_blank')" class="r-btn btn-sec">ПОЛОЖЕННЯ</button>
         </div>
 
-        <div id="ruta-timer-box" style="display: flex; gap: 12px; color: white; padding-bottom: 5px;">
-            <div class="t-unit"><span id="d-val">00</span><small>дн</small></div>
-            <div class="t-unit"><span id="h-val">00</span><small>год</small></div>
-            <div class="t-unit"><span id="m-val">00</span><small>хв</small></div>
-            <div class="t-unit"><span id="s-val">00</span><small>сек</small></div>
+        <div id="ruta-timer" style="display: flex; align-items: center; gap: 5px; color: white; font-family: monospace;">
+            <div style="text-align: center; margin-right: 5px;">
+                <span id="d-val" style="color: #f1c40f; font-size: 18px; font-weight: 900;">00</span>
+                <small style="display:block; font-size: 8px; color: #fff; text-transform: uppercase;">дн</small>
+            </div>
+            
+            <div style="display: flex; align-items: center; background: rgba(0,0,0,0.5); padding: 4px 8px; border-radius: 5px; border: 1px solid rgba(241,196,15,0.3);">
+                <span id="h-val" class="time-num">00</span>
+                <span class="dots">:</span>
+                <span id="m-val" class="time-num">00</span>
+                <span class="dots">:</span>
+                <span id="s-val" class="time-num">00</span>
+            </div>
         </div>
 
-        <div style="padding-right: 20px; padding-bottom: 5px;">
-            <button onclick="goToRutaForm()" class="ruta-btn btn-primary">
-                ЗАЯВКА
-            </button>
+        <div style="padding-right: 15px;">
+            <button onclick="window.location.href='/podaty-zayavku'" class="r-btn btn-prim">ЗАЯВКА</button>
         </div>
     </div>
 
     <style>
-        .ruta-btn {
-            padding: 10px 20px;
-            border-radius: 8px;
+        .r-btn {
+            padding: 8px 14px;
+            border-radius: 5px;
             font-weight: bold;
-            font-size: 12px;
+            font-size: 11px;
             cursor: pointer;
             border: none;
             text-transform: uppercase;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            transition: 0.3s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            pointer-events: auto !important;
         }
-        .btn-secondary { background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.4); }
-        .btn-primary { background: #ff4500; color: white; }
-        .ruta-btn:hover { transform: scale(1.05); filter: brightness(1.1); }
+        .btn-sec { background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.4); }
+        .btn-prim { background: #ff4500; color: white; }
+        
+        .time-num { color: #f1c40f; font-size: 20px; font-weight: 900; min-width: 24px; text-align: center; }
+        .dots { color: #fff; font-size: 18px; font-weight: bold; margin: 0 2px; animation: blink 1s infinite; }
 
-        .t-unit { text-align: center; min-width: 35px; }
-        .t-unit span { display: block; font-size: 22px; font-weight: 900; color: #f1c40f; line-height: 1; }
-        .t-unit small { font-size: 9px; text-transform: uppercase; opacity: 0.8; }
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
 
-        @media (max-width: 600px) {
-            .ruta-btn { padding: 8px 12px; font-size: 10px; }
-            .t-unit span { font-size: 16px; }
-            .t-unit { min-width: 25px; gap: 5px; }
-            #ruta-timer-box { gap: 8px; }
+        @media (max-width: 480px) {
+            .r-btn { padding: 6px 10px; font-size: 9px; }
+            .time-num { font-size: 16px; min-width: 18px; }
+            .dots { font-size: 14px; }
         }
     </style>
     `;
 
-    // Вставляємо інтерфейс у ваш контейнер
+    banner.style.position = 'relative';
     banner.insertAdjacentHTML('beforeend', uiHtml);
 
-    // 3. Логіка таймера (Відлік до 21 березня 2026)
-    const targetDate = new Date("March 21, 2026 09:00:00").getTime();
-
-    const timerInterval = setInterval(() => {
+    const target = new Date("March 21, 2026 09:00:00").getTime();
+    const update = () => {
         const now = new Date().getTime();
-        const diff = targetDate - now;
-
-        if (diff < 0) {
-            clearInterval(timerInterval);
-            document.getElementById("ruta-timer-box").innerHTML = "<b>КОНКУРС РОЗПОЧАТО!</b>";
-            return;
-        }
+        const diff = target - now;
+        if (diff < 0) return;
 
         const d = Math.floor(diff / (1000 * 60 * 60 * 24));
         const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -96,26 +96,8 @@ function initRutaUI() {
         document.getElementById("h-val").innerText = h.toString().padStart(2, '0');
         document.getElementById("m-val").innerText = m.toString().padStart(2, '0');
         document.getElementById("s-val").innerText = s.toString().padStart(2, '0');
-    }, 1000);
+    };
+    setInterval(update, 1000);
+    update();
 }
-
-/**
- * Спеціальна функція для заявки Червона Рута
- * Перевіряє авторизацію через localStorage (як у вашому index.html)
- */
-function goToRutaForm() {
-    const user = localStorage.getItem('user');
-    
-    // Пряме посилання на файл анкети
-    const RUTA_PAGE = "register.html"; 
-
-    if (!user) {
-        alert("Будь ласка, авторизуйтесь (кнопка 'Увійти' зверху), щоб заповнити анкету.");
-    } else {
-        // Перехід на велику форму
-        window.location.href = RUTA_PAGE;
-    }
-}
-
-// Запуск при завантаженні сторінки
 document.addEventListener('DOMContentLoaded', initRutaUI);
