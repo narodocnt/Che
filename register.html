@@ -3,71 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Анкета учасника - Червона Рута 2026</title>
+    <title>Анкета "Червона Рута" — Офіційна заявка</title>
     <style>
-        body { font-family: sans-serif; background: #f4f4f4; padding: 20px; }
-        .form-card { max-width: 600px; margin: auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        h2 { color: #ff4500; text-align: center; }
-        .field { margin-bottom: 15px; }
-        label { display: block; font-weight: bold; margin-bottom: 5px; font-size: 14px; }
-        input, select, textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
-        button { width: 100%; padding: 15px; background: #ff4500; color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; font-weight: bold; margin-top: 20px; }
-        button:hover { background: #e63e00; }
+        :root { --accent: #ff4500; --bg: #f8f9fa; }
+        body { font-family: 'Segoe UI', Roboto, sans-serif; background: var(--bg); margin: 0; padding: 20px; color: #2d3436; }
+        .container { max-width: 700px; margin: 0 auto; background: white; padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        h2 { color: var(--accent); text-align: center; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
+        p.subtitle { text-align: center; margin-bottom: 30px; color: #636e72; font-style: italic; }
+        
+        .form-group { margin-bottom: 20px; }
+        label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 14px; color: #2d3436; }
+        input, select, textarea { 
+            width: 100%; padding: 12px; border: 2px solid #dfe6e9; border-radius: 10px; 
+            font-size: 15px; transition: 0.3s; box-sizing: border-box;
+        }
+        input:focus { border-color: var(--accent); outline: none; background: #fffcfb; }
+        
+        .submit-btn { 
+            width: 100%; padding: 18px; background: var(--accent); color: white; border: none; 
+            border-radius: 12px; font-size: 18px; font-weight: bold; cursor: pointer; 
+            transition: 0.3s; margin-top: 20px; box-shadow: 0 5px 15px rgba(255, 69, 0, 0.3);
+        }
+        .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(255, 69, 0, 0.4); }
+        .submit-btn:disabled { background: #ccc; cursor: not-allowed; }
     </style>
 </head>
 <body>
-    <div class="form-card">
-        <h2>АНКЕТА-ЗАЯВКА</h2>
-        <p style="text-align: center; font-size: 12px;">відбіркового конкурсу "Червона рута" — 2026</p>
+
+<div class="container">
+    <h2>АНКЕТА-ЗАЯВКА</h2>
+    <p class="subtitle">на участь у відбірковому конкурсі фестивалю «Червона рута»</p>
+
+    <form id="rutaMainForm">
+        <div class="form-group"><label>1. Прізвище, ім’я, по батькові соліста (назва гурту)</label><input type="text" name="p1" required></div>
+        <div class="form-group"><label>2. Жанр (поп, рок, акустика, фольклор тощо)</label><input type="text" name="p2" required></div>
+        <div class="form-group"><label>3. Кількість учасників (осіб)</label><input type="number" name="p3" required></div>
+        <div class="form-group"><label>4. П.І.Б. керівника (для гурту)</label><input type="text" name="p4"></div>
+        <div class="form-group"><label>5. Число, місяць, рік народження (соліста або керівника)</label><input type="text" name="p5" placeholder="ДД.ММ.РРРР" required></div>
+        <div class="form-group"><label>6. Повна домашня адреса</label><input type="text" name="p6" required></div>
+        <div class="form-group"><label>7. Контактний телефон (мобільний)</label><input type="tel" name="p7" required></div>
+        <div class="form-group"><label>8. E-mail</label><input type="email" name="p8" required></div>
+        <div class="form-group"><label>9. Місце навчання або роботи</label><input type="text" name="p9"></div>
+        <div class="form-group"><label>10. Технічні вимоги (кількість мікрофонів, підключення)</label><textarea name="p10" rows="3"></textarea></div>
+        <div class="form-group"><label>11. Репертуар: 1-ша пісня (назва, автори слів і музики)</label><input type="text" name="p11" required></div>
+        <div class="form-group"><label>12. Репертуар: 2-га пісня (назва, автори слів і музики)</label><input type="text" name="p12" required></div>
+        <div class="form-group"><label>13. Репертуар: 3-тя пісня (назва, автори слів і музики)</label><input type="text" name="p13" required></div>
+        <div class="form-group"><label>14. Чи є власні аудіо-відео записи (де подивитись?)</label><input type="text" name="p14"></div>
+        <div class="form-group"><label>15. Посилання на соцмережі (Facebook/Instagram/YouTube)</label><input type="url" name="p15"></div>
+        <div class="form-group"><label>16. Звідки дізналися про конкурс?</label><input type="text" name="p16"></div>
+
+        <button type="submit" class="submit-btn" id="btnText">ВІДПРАВИТИ ДАНІ</button>
+    </form>
+</div>
+
+<script>
+    document.getElementById('rutaMainForm').onsubmit = async (e) => {
+        e.preventDefault();
+        const btn = document.getElementById('btnText');
+        btn.disabled = true;
+        btn.innerText = "НАДСИЛАННЯ...";
+
+        const formData = new FormData(e.target);
+        const data = Object.fromEntries(formData.entries());
         
-        <form id="rutaForm">
-            <div class="field"><label>1. Прізвище, ім’я, по батькові (соліста або назва гурту):</label><input name="f1" required></div>
-            <div class="field"><label>2. Жанр (поп, рок, акустика тощо):</label><input name="f2" required></div>
-            <div class="field"><label>3. Кількість учасників:</label><input type="number" name="f3" required></div>
-            <div class="field"><label>4. ПІБ керівника (для гуртів):</label><input name="f4"></div>
-            <div class="field"><label>5. Дата народження (учасника або керівника):</label><input type="date" name="f5" required></div>
-            <div class="field"><label>6. Повна домашня адреса:</label><input name="f6" required></div>
-            <div class="field"><label>7. Контактний телефон:</label><input type="tel" name="f7" required></div>
-            <div class="field"><label>8. Електронна пошта (E-mail):</label><input type="email" name="f8" required></div>
-            <div class="field"><label>9. Місце навчання або роботи:</label><input name="f9"></div>
-            <div class="field"><label>10. Технічні вимоги (райдер):</label><textarea name="f10" rows="3"></textarea></div>
-            <div class="field"><label>11. Репертуар (Назва пісні 1, автори):</label><input name="f11" required></div>
-            <div class="field"><label>12. Репертуар (Назва пісні 2, автори):</label><input name="f12" required></div>
-            <div class="field"><label>13. Репертуар (Назва пісні 3, автори):</label><input name="f13" required></div>
-            <div class="field"><label>14. Чи є у вас власні аудіозаписи?</label><select name="f14"><option>Так</option><option>Ні</option></select></div>
-            <div class="field"><label>15. Посилання на відео виступу (якщо є):</label><input name="f15"></div>
-            <div class="field"><label>16. Звідки дізналися про конкурс?</label><input name="f16"></div>
+        // Додаємо службову інформацію для таблиці
+        data.timestamp = new Date().toLocaleString('uk-UA');
+        data.user_email = localStorage.getItem('user') || 'Анонімно';
 
-            <button type="submit" id="submitBtn">ВІДПРАВИТИ ЗАЯВКУ</button>
-        </form>
-    </div>
+        try {
+            const response = await fetch('https://n8n.narodocnt.online/webhook/ruta-zayavka', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
 
-    <script>
-        document.getElementById('rutaForm').onsubmit = async (e) => {
-            e.preventDefault();
-            const btn = document.getElementById('submitBtn');
-            btn.innerText = "Відправка...";
-            btn.disabled = true;
-
-            const formData = new FormData(e.target);
-            const data = Object.fromEntries(formData.entries());
-            data.user_name = localStorage.getItem('user'); // Додаємо ім'я з авторизації
-
-            try {
-                // Відправка на ваш вебхук n8n для Червоної Рути
-                await fetch('https://n8n.narodocnt.online/webhook/ruta-zayavka', {
-                    method: 'POST',
-                    body: JSON.stringify(data),
-                    headers: { 'Content-Type': 'application/json' }
-                });
-                alert('Дякуємо! Ваша заявка прийнята.');
+            if (response.ok) {
+                alert('Заявку успішно надіслано! Ми зв’яжемося з вами найближчим часом.');
                 window.location.href = 'index.html';
-            } catch (err) {
-                alert('Помилка при відправці. Спробуйте ще раз.');
-                btn.disabled = false;
-                btn.innerText = "ВІДПРАВИТИ ЗАЯВКУ";
+            } else {
+                throw new Error();
             }
-        };
-    </script>
+        } catch (err) {
+            alert('Помилка відправки. Перевірте з’єднання та спробуйте ще раз.');
+            btn.disabled = false;
+            btn.innerText = "ВІДПРАВИТИ ДАНІ";
+        }
+    };
+</script>
 </body>
 </html>
