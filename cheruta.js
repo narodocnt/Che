@@ -1,7 +1,3 @@
-/**
- * cheruta.js - Версія з "розумною" кнопкою заявки
- */
-
 function initRutaUI() {
     const banner = document.querySelector('.ruta-container');
     if (!banner) return;
@@ -28,6 +24,7 @@ function initRutaUI() {
 
         <div id="ruta-timer" style="display: flex; align-items: center; gap: 5px; color: white; font-family: monospace;">
             <span id="d-val" style="color: #f1c40f; font-size: 22px; font-weight: 900; margin-right: 5px;">00</span>
+            
             <div style="display: flex; align-items: center; background: rgba(0,0,0,0.6); padding: 4px 10px; border-radius: 5px; border: 1px solid rgba(241,196,15,0.4);">
                 <span id="h-val" class="time-num">00</span>
                 <span class="dots">:</span>
@@ -38,7 +35,7 @@ function initRutaUI() {
         </div>
 
         <div style="padding-right: 15px;">
-            <button id="ruta-action-btn" class="r-btn btn-prim">ЗАЯВКА</button>
+            <button onclick="goToForm()" class="r-btn btn-prim">ЗАЯВКА</button>
         </div>
     </div>
 
@@ -54,12 +51,10 @@ function initRutaUI() {
             box-shadow: 0 4px 12px rgba(0,0,0,0.6);
             pointer-events: auto !important;
             display: inline-block;
-            transition: 0.2s;
         }
         .btn-sec { background: rgba(255,255,255,0.25); color: white; border: 1px solid rgba(255,255,255,0.4); }
         .btn-prim { background: #ff4500; color: white; }
-        .r-btn:hover { transform: translateY(-2px); filter: brightness(1.2); }
-
+        
         .time-num { color: #f1c40f; font-size: 22px; font-weight: 900; min-width: 26px; text-align: center; }
         .dots { color: #fff; font-size: 20px; font-weight: bold; margin: 0 2px; animation: blink 1s infinite; }
         @keyframes blink { 50% { opacity: 0.3; } }
@@ -75,30 +70,6 @@ function initRutaUI() {
     banner.style.position = 'relative';
     banner.insertAdjacentHTML('beforeend', uiHtml);
 
-    // НОВА ЛОГІКА КНОПКИ
-    document.getElementById('ruta-action-btn').onclick = function() {
-        // 1. Пробуємо знайти вашу кнопку в меню за текстом "ПОДАТИ ЗАЯВКУ"
-        const menuLinks = document.querySelectorAll('nav a, header a');
-        let found = false;
-
-        menuLinks.forEach(link => {
-            if (link.textContent.includes('ЗАЯВКУ')) {
-                link.click(); // Симулюємо клік по справжній кнопці меню
-                found = true;
-            }
-        });
-
-        // 2. Якщо кнопку в меню не знайшли, викликаємо функцію напряму
-        if (!found) {
-            if (typeof goToForm === 'function') {
-                goToForm();
-            } else {
-                alert('Будь ласка, увійдіть через кнопку в меню');
-            }
-        }
-    };
-
-    // Таймер
     const targetDate = new Date("March 21, 2026 09:00:00").getTime();
     function updateTimer() {
         const now = new Date().getTime();
@@ -110,19 +81,12 @@ function initRutaUI() {
         const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
         const s = Math.floor((diff % (1000 * 60)) / 1000);
 
-        const elD = document.getElementById("d-val");
-        const elH = document.getElementById("h-val");
-        const elM = document.getElementById("m-val");
-        const elS = document.getElementById("s-val");
-
-        if(elD) elD.innerText = d.toString().padStart(2, '0');
-        if(elH) elH.innerText = h.toString().padStart(2, '0');
-        if(elM) elM.innerText = m.toString().padStart(2, '0');
-        if(elS) elS.innerText = s.toString().padStart(2, '0');
+        document.getElementById("d-val").innerText = d.toString().padStart(2, '0');
+        document.getElementById("h-val").innerText = h.toString().padStart(2, '0');
+        document.getElementById("m-val").innerText = m.toString().padStart(2, '0');
+        document.getElementById("s-val").innerText = s.toString().padStart(2, '0');
     }
-
     setInterval(updateTimer, 1000);
     updateTimer();
 }
-
 document.addEventListener('DOMContentLoaded', initRutaUI);
