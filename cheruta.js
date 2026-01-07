@@ -114,5 +114,85 @@ document.addEventListener("DOMContentLoaded", function() {
                 document.body.style.overflow = 'auto'; 
             }
         };
+
+        /**
+ * cheruta.js - Таймер зворотного відліку для конкурсу "Червона Рута"
+ */
+
+function initRutaTimer() {
+    // Встановлюємо дату: 21 березня 2026 року, 09:00:00
+    const targetDate = new Date("March 21, 2026 09:00:00").getTime();
+
+    // Створюємо елемент таймера
+    const timerHtml = `
+        <div id="ruta-timer-container" style="
+            background: #222; 
+            color: white; 
+            padding: 15px; 
+            text-align: center; 
+            border-radius: 0 0 15px 15px; 
+            margin: -20px auto 20px; 
+            max-width: 900px; 
+            border-top: 2px solid #ff4500;
+            font-family: 'Segoe UI', sans-serif;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        ">
+            <div style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; color: #ccc;">
+                До початку обласного відбіркового конкурсу:
+            </div>
+            <div id="ruta-timer-display" style="display: flex; justify-content: center; gap: 15px; font-weight: bold;">
+                <div class="time-unit">
+                    <span id="days" style="font-size: 1.5rem; color: #ff4500; display: block;">00</span>
+                    <small style="font-size: 0.7rem; color: #888;">днів</small>
+                </div>
+                <div class="time-unit">
+                    <span id="hours" style="font-size: 1.5rem; color: #ff4500; display: block;">00</span>
+                    <small style="font-size: 0.7rem; color: #888;">годин</small>
+                </div>
+                <div class="time-unit">
+                    <span id="minutes" style="font-size: 1.5rem; color: #ff4500; display: block;">00</span>
+                    <small style="font-size: 0.7rem; color: #888;">хвилин</small>
+                </div>
+                <div class="time-unit">
+                    <span id="seconds" style="font-size: 1.5rem; color: #ff4500; display: block;">00</span>
+                    <small style="font-size: 0.7rem; color: #888;">секунд</small>
+                </div>
+            </div>
+        </div>
+    `;
+
+    // Знаходимо банер і вставляємо таймер одразу після нього
+    const banner = document.querySelector('.ruta-container');
+    if (banner) {
+        banner.insertAdjacentHTML('afterend', timerHtml);
+    }
+
+    // Оновлення кожну секунду
+    const timerInterval = setInterval(function() {
+        const now = new Date().getTime();
+        const distance = targetDate - now;
+
+        if (distance < 0) {
+            clearInterval(timerInterval);
+            document.getElementById("ruta-timer-container").innerHTML = "<h3>КОНКУРС РОЗПОЧАТО!</h3>";
+            return;
+        }
+
+        // Розрахунок часу
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        // Вивід у HTML з форматуванням (додаємо нуль попереду, якщо число < 10)
+        document.getElementById("days").innerText = days.toString().padStart(2, '0');
+        document.getElementById("hours").innerText = hours.toString().padStart(2, '0');
+        document.getElementById("minutes").innerText = minutes.toString().padStart(2, '0');
+        document.getElementById("seconds").innerText = seconds.toString().padStart(2, '0');
+    }, 1000);
+}
+
+// Запуск після завантаження DOM
+document.addEventListener('DOMContentLoaded', initRutaTimer);
     }
 });
