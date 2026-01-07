@@ -1,5 +1,5 @@
 /**
- * cheruta.js - Версія з цифровим годинником (двокрапки)
+ * cheruta.js - Фінальна версія: оригінальні посилання + чисті цифри
  */
 
 function initRutaUI() {
@@ -15,24 +15,23 @@ function initRutaUI() {
         bottom: 0; 
         left: 0; 
         width: 100%; 
-        background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%);
-        padding: 10px 0;
+        background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0) 100%);
+        padding: 12px 0;
         display: flex;
         align-items: center; 
         justify-content: space-between; 
-        z-index: 100;
+        z-index: 9999;
     ">
-        <div style="padding-left: 15px;">
-            <button onclick="window.open('/polozhennya.pdf', '_blank')" class="r-btn btn-sec">ПОЛОЖЕННЯ</button>
+        <div style="padding-left: 15px; z-index: 10000;">
+            <button onclick="window.open('ПОСИЛАННЯ_НА_ПОЛОЖЕННЯ', '_blank')" class="r-btn btn-sec">ПОЛОЖЕННЯ</button>
         </div>
 
         <div id="ruta-timer" style="display: flex; align-items: center; gap: 5px; color: white; font-family: monospace;">
             <div style="text-align: center; margin-right: 5px;">
-                <span id="d-val" style="color: #f1c40f; font-size: 18px; font-weight: 900;">00</span>
-                <small style="display:block; font-size: 8px; color: #fff; text-transform: uppercase;">дн</small>
+                <span id="d-val" style="color: #f1c40f; font-size: 22px; font-weight: 900;">00</span>
             </div>
             
-            <div style="display: flex; align-items: center; background: rgba(0,0,0,0.5); padding: 4px 8px; border-radius: 5px; border: 1px solid rgba(241,196,15,0.3);">
+            <div style="display: flex; align-items: center; background: rgba(0,0,0,0.6); padding: 4px 10px; border-radius: 5px; border: 1px solid rgba(241,196,15,0.4);">
                 <span id="h-val" class="time-num">00</span>
                 <span class="dots">:</span>
                 <span id="m-val" class="time-num">00</span>
@@ -41,39 +40,39 @@ function initRutaUI() {
             </div>
         </div>
 
-        <div style="padding-right: 15px;">
-            <button onclick="window.location.href='/podaty-zayavku'" class="r-btn btn-prim">ЗАЯВКА</button>
+        <div style="padding-right: 15px; z-index: 10000;">
+            <button onclick="goToForm()" class="r-btn btn-prim">ЗАЯВКА</button>
         </div>
     </div>
 
     <style>
         .r-btn {
-            padding: 8px 14px;
-            border-radius: 5px;
-            font-weight: bold;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-weight: 800;
             font-size: 11px;
             cursor: pointer;
             border: none;
             text-transform: uppercase;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-            pointer-events: auto !important;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+            position: relative;
+            pointer-events: all !important;
+            display: inline-block;
         }
-        .btn-sec { background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.4); }
+        .btn-sec { background: rgba(255,255,255,0.25); color: white; border: 1px solid rgba(255,255,255,0.4); }
         .btn-prim { background: #ff4500; color: white; }
         
-        .time-num { color: #f1c40f; font-size: 20px; font-weight: 900; min-width: 24px; text-align: center; }
-        .dots { color: #fff; font-size: 18px; font-weight: bold; margin: 0 2px; animation: blink 1s infinite; }
+        .r-btn:hover { transform: translateY(-2px); filter: brightness(1.2); }
 
-        @keyframes blink {
-            0% { opacity: 1; }
-            50% { opacity: 0.3; }
-            100% { opacity: 1; }
-        }
+        .time-num { color: #f1c40f; font-size: 22px; font-weight: 900; min-width: 26px; text-align: center; }
+        .dots { color: #fff; font-size: 20px; font-weight: bold; margin: 0 2px; animation: blink 1s infinite; }
+
+        @keyframes blink { 50% { opacity: 0.3; } }
 
         @media (max-width: 480px) {
-            .r-btn { padding: 6px 10px; font-size: 9px; }
-            .time-num { font-size: 16px; min-width: 18px; }
-            .dots { font-size: 14px; }
+            .r-btn { padding: 8px 10px; font-size: 9px; }
+            .time-num, #d-val { font-size: 17px; min-width: 20px; }
+            .dots { font-size: 15px; }
         }
     </style>
     `;
@@ -81,10 +80,12 @@ function initRutaUI() {
     banner.style.position = 'relative';
     banner.insertAdjacentHTML('beforeend', uiHtml);
 
-    const target = new Date("March 21, 2026 09:00:00").getTime();
-    const update = () => {
+    const targetDate = new Date("March 21, 2026 09:00:00").getTime();
+
+    function updateTimer() {
         const now = new Date().getTime();
-        const diff = target - now;
+        const diff = targetDate - now;
+
         if (diff < 0) return;
 
         const d = Math.floor(diff / (1000 * 60 * 60 * 24));
@@ -92,12 +93,23 @@ function initRutaUI() {
         const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
         const s = Math.floor((diff % (1000 * 60)) / 1000);
 
-        document.getElementById("d-val").innerText = d.toString().padStart(2, '0');
-        document.getElementById("h-val").innerText = h.toString().padStart(2, '0');
-        document.getElementById("m-val").innerText = m.toString().padStart(2, '0');
-        document.getElementById("s-val").innerText = s.toString().padStart(2, '0');
-    };
-    setInterval(update, 1000);
-    update();
+        const elD = document.getElementById("d-val");
+        const elH = document.getElementById("h-val");
+        const elM = document.getElementById("m-val");
+        const elS = document.getElementById("s-val");
+
+        if(elD) elD.innerText = d.toString().padStart(2, '0');
+        if(elH) elH.innerText = h.toString().padStart(2, '0');
+        if(elM) elM.innerText = m.toString().padStart(2, '0');
+        if(elS) elS.innerText = s.toString().padStart(2, '0');
+    }
+
+    setInterval(updateTimer, 1000);
+    updateTimer();
 }
-document.addEventListener('DOMContentLoaded', initRutaUI);
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initRutaUI);
+} else {
+    initRutaUI();
+}
