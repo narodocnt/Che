@@ -3,163 +3,179 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Заявка на участь у фестивалі «ЧЕРВОНА РУТА»</title>
+    <title>Заявка-Анкета «ЧЕРВОНА РУТА–2027»</title>
     <style>
-        body { font-family: 'Times New Roman', serif; background-color: #f0f0f0; padding: 20px; line-height: 1.4; color: #000; }
-        .form-container { max-width: 800px; margin: auto; background: white; padding: 40px; border: 1px solid #ccc; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-        .header-top { display: flex; justify-content: space-between; margin-bottom: 30px; }
-        .header-left { width: 50%; }
-        .header-right { width: 45%; border-bottom: 1px solid #000; font-style: italic; }
-        .title { text-align: center; font-weight: bold; margin: 20px 0; font-size: 18px; }
-        .genre-box { border: 1px solid #000; padding: 10px; margin: 10px 0; }
-        .field-group { margin-bottom: 15px; border-bottom: 1px dashed #ccc; padding-bottom: 5px; }
-        label { font-weight: bold; display: block; margin-bottom: 5px; }
-        input[type="text"], input[type="email"], input[type="tel"], textarea { 
-            width: 100%; border: none; outline: none; background: transparent; font-family: inherit; font-size: 16px; 
+        body { background-color: #ddd; padding: 20px; font-family: Arial, sans-serif; display: flex; justify-content: center; }
+        .page-sheet { 
+            background-color: #fdf5e6; /* Кремовий колір як на фото */
+            width: 210mm; min-height: 297mm; padding: 15mm; 
+            box-shadow: 0 0 15px rgba(0,0,0,0.2); box-sizing: border-box; position: relative;
         }
-        .instruction { font-size: 12px; color: #555; font-style: italic; }
-        .mandatory { color: red; text-align: center; font-weight: bold; margin: 20px 0; border: 2px solid red; padding: 10px; }
+        .header-section { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
+        .logo-img { width: 120px; }
+        .dir-text { text-align: right; color: #0056b3; font-weight: bold; font-size: 14px; }
+        .input-line { border: 2px solid #000; background: white; width: 100%; height: 25px; margin-top: 5px; }
+        
+        .main-title { text-align: center; color: #e60000; font-size: 24px; font-weight: 900; margin: 10px 0; }
+        .sub-title { text-align: center; color: #0056b3; font-size: 18px; font-weight: bold; margin-bottom: 15px; }
+        .slogan { text-align: center; color: #e60000; font-weight: bold; font-size: 20px; margin-bottom: 15px; }
+        
+        .genre-table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+        .genre-table td { border: 2px solid #000; padding: 5px; text-align: center; font-size: 12px; font-weight: bold; background: white; }
+        .genre-table input { margin-left: 5px; cursor: pointer; }
+        
+        .instruction { font-size: 10px; color: #0056b3; text-align: center; margin-bottom: 10px; }
+        .mandatory-warning { color: #e60000; text-align: center; font-weight: bold; margin: 15px 0; font-size: 14px; }
+        
+        .form-row { margin-bottom: 12px; display: flex; align-items: flex-start; gap: 10px; }
+        .form-label { color: #0056b3; font-weight: bold; font-size: 13px; min-width: 250px; text-decoration: underline; }
+        .form-input-box { flex-grow: 1; }
+        .full-input { border: 2px solid #000; background: white; width: 100%; padding: 4px; box-sizing: border-box; font-size: 14px; }
+        
+        .footer-sign { display: flex; justify-content: space-between; margin-top: 20px; align-items: flex-end; }
         .submit-btn { 
-            display: block; width: 100%; padding: 15px; background: #ff4500; color: white; 
-            border: none; font-weight: bold; font-size: 18px; cursor: pointer; margin-top: 30px; 
+            position: fixed; bottom: 20px; right: 20px; padding: 15px 40px; 
+            background: #e60000; color: white; border: none; border-radius: 50px; 
+            font-weight: bold; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.3); z-index: 1000;
         }
-        .submit-btn:hover { background: #cc3700; }
     </style>
 </head>
 <body>
 
-<div class="form-container">
-    <div class="header-top">
-        <div class="header-left">
-            Дирекції Всеукраїнського<br>
-            фестивалю сучасної пісні<br>
-            та популярної музики<br>
-            «ЧЕРВОНА РУТА»
-        </div>
-        <div class="header-right">
-            <input type="text" placeholder="[ прізвище та ініціали соліста / назву гурту ]">
+<div class="page-sheet">
+    <div class="header-section">
+        <img src="https://narodocnt.online/фото_для_боту.png" class="logo-img">
+        <div class="dir-text">
+            Дирекції Всеукраїнського<br>фестивалю сучасної пісні<br>та популярної музики<br>«ЧЕРВОНА РУТА»<br>
+            <div class="input-line"></div>
+            <div class="instruction" style="text-align: right;">[ прізвище та ініціали соліста / назву гурту ]</div>
         </div>
     </div>
 
-    <div style="text-align: center; font-style: italic;">Червона рута лунає – опір триває!</div>
-    <div class="title">З А Я В К А<br>на участь в обласному відбірковому конкурсі – 2026 фестивалю «ЧЕРВОНА РУТА–2027»</div>
+    <div class="slogan">Червона рута лунає – опір триває!</div>
+    <div class="sub-title" style="font-size: 26px;">З А Я В К А</div>
+    <div class="instruction" style="font-size: 14px; font-weight: bold;">на участь в обласному відбірковому конкурсі – 2026 фестивалю</div>
+    <div class="main-title" style="font-size: 32px;">«ЧЕРВОНА РУТА–2027»</div>
 
-    <div class="mandatory">! ! УСІ ПОЛЯ АНКЕТИ Є ОБОВ’ЯЗКОВИМИ ДЛЯ ЗАПОВНЕННЯ ! ! !</div>
+    <p style="color: #0056b3; font-size: 13px; font-weight: bold; margin-bottom: 5px;">у жанрі:</p>
+    <table class="genre-table">
+        <tr>
+            <td style="color: green;">фольклор <input type="radio" name="p1" value="фольклор"></td>
+            <td style="color: red;">поп-музика <input type="radio" name="p1" value="поп-музика"></td>
+            <td style="color: purple;">танцювальна <input type="radio" name="p1" value="танцювальна"></td>
+            <td style="color: orange;">акустична <input type="radio" name="p1" value="акустична"></td>
+            <td style="color: brown;">рок-музика <input type="radio" name="p1" value="рок-музика"></td>
+            <td style="color: blue;">інша музика <input type="radio" name="p1" value="інша музика"></td>
+        </tr>
+    </table>
+    <div class="instruction">[ для позначення жанру, поставте мітку у відповідному полі ]</div>
 
-    <form id="rutaOfficialForm">
-        <div class="field-group">
-            <label>01. Жанр музики</label>
-            <div class="instruction">[ фольклор / поп-музика / танцювальна / акустична / рок-музика / інша музика ]</div>
-            <input type="text" name="p1" required>
+    <div style="color: #0056b3; font-size: 13px; line-height: 1.5;">
+        Прошу включити мене / наш гурт, до складу учасників обласного відбіркового конкурсу XVII Всеукраїнського фестивалю сучасної пісні та популярної музики «Червона рута» та надати Запрошення учасника відбіркових змагань.
+        <br><br>З Положенням про фестиваль та його Творчою концепцією ознайомлений(а). Зобов’язуюся(ємося) дотримуватися Положення.
+    </div>
+
+    <div class="input-line" style="margin-top: 20px;"></div>
+    <div class="instruction">[ вказати повністю прізвище, ім’я, по батькові соліста / керівника гурту ]</div>
+
+    <div class="footer-sign">
+        <div style="color: #0056b3; font-size: 13px;">Дата подачі заявки: <input type="text" style="border:1px solid #000; width: 100px;"></div>
+        <div style="border-top: 1px solid #000; width: 200px; text-align: center; color: #0056b3; font-size: 13px;">Підпис учасника</div>
+    </div>
+
+    <hr style="border: 1px dashed #0056b3; margin: 30px 0;">
+
+    <div class="main-title">«ЧЕРВОНА РУТА–2027»</div>
+    <div class="sub-title">АНКЕТА УЧАСНИКА ОБЛАСНОГО ВІДБІРКОВОГО КОНКУРСУ - 2026</div>
+    <div class="mandatory-warning">! ! ! УСІ ПОЛЯ АНКЕТИ Є ОБОВ’ЯЗКОВИМИ ДЛЯ ЗАПОВНЕННЯ ! ! !</div>
+
+    <form id="rutaFinalForm">
+        <div class="form-row">
+            <div class="form-label">02. Область, яку представляєте</div>
+            <div class="form-input-box">
+                <input type="text" name="p2" class="full-input" required>
+                <div class="instruction">[ вказати область у якій плануєте взяти участь ]</div>
+            </div>
         </div>
 
-        <div class="field-group">
-            <label>02. Область, яку представляєте</label>
-            <div class="instruction">[ вказати область у якій плануєте взяти участь ]</div>
-            <input type="text" name="p2" required>
+        <div class="form-row">
+            <div class="form-label">03. Учасник відбіркового конкурсу</div>
+            <div class="form-input-box">
+                <input type="text" name="p3" class="full-input" required>
+                <div class="instruction">[ cоліст вказує: ПІБ / гурт – назву гурту, українською мовою ]</div>
+            </div>
         </div>
 
-        <div class="field-group">
-            <label>03. Учасник відбіркового конкурсу</label>
-            <div class="instruction">[ cоліст вказує: ПІБ / гурт – назву гурту ]</div>
-            <input type="text" name="p3" required>
+        <div class="form-row">
+            <div class="form-label">04. Володіння інструментами</div>
+            <div class="form-input-box">
+                <input type="text" name="p4" class="full-input" required>
+                <div class="instruction">[ учасники гурту вказують прізвище – інструменти / соліст – інструменти ]</div>
+            </div>
         </div>
 
-        <div class="field-group">
-            <label>04. Володіння інструментами</label>
-            <div class="instruction">[ учасники гурту вказують прізвище – інструменти, вокал / соліст – інструменти ]</div>
-            <input type="text" name="p4" required>
+        <div class="form-row">
+            <div class="form-label">05. Контакти соліста / учасників гурту</div>
+            <div class="form-input-box">
+                <textarea name="p5" class="full-input" rows="2" required></textarea>
+                <div class="instruction">[ адреса проживання / номер мобільного телефона / e-mail ]</div>
+            </div>
         </div>
 
-        <div class="field-group">
-            <label>05. Контакти соліста / учасників гурту</label>
-            <div class="instruction">[ адреса проживання / номер мобільного телефона / електронна пошта ]</div>
-            <textarea name="p5" rows="2" required></textarea>
+        <div class="form-row">
+            <div class="form-label">06. Контакти керівника соліста / гурту</div>
+            <div class="form-input-box">
+                <input type="text" name="p6" class="full-input" required>
+                <div class="instruction">[ прізвище, ім’я, по батькові / мобільний телефон / e-mail ]</div>
+            </div>
         </div>
 
-        <div class="field-group">
-            <label>06. Контакти керівника соліста / гурту</label>
-            <div class="instruction">[ прізвище, ім’я, по батькові / мобільний телефон / електронна адреса ]</div>
-            <input type="text" name="p6" required>
+        <div class="form-row">
+            <div class="form-label">07. Дата народження виконавця(ів)</div>
+            <div class="form-input-box">
+                <input type="text" name="p7" class="full-input" required>
+                <div class="instruction">[ вказують прізвище ім’я та дату народження кожного учасника ]</div>
+            </div>
         </div>
 
-        <div class="field-group">
-            <label>07. Дата народження виконавця(ів)</label>
-            <div class="instruction">[ вказують прізвище ім’я та дату народження кожного учасника ]</div>
-            <input type="text" name="p7" required>
+        <div class="form-row">
+            <div class="form-label">10. Конкурсний репертуар</div>
+            <div class="form-input-box">
+                <textarea name="p10" class="full-input" rows="3" placeholder="1 пісня:&#10;2 пісня:&#10;3 пісня:" required></textarea>
+                <div class="instruction">[ назва пісні / хронометраж / автор музики / автор слів ]</div>
+            </div>
         </div>
 
-        <div class="field-group">
-            <label>08. Фах, місце роботи / навчання</label>
-            <div class="instruction">[ вказують прізвище ім’я та дані про зайнятість кожного учасника ]</div>
-            <input type="text" name="p8" required>
+        <div class="form-row">
+            <div class="form-label">16. Звідки Ви дізналися про конкурс?</div>
+            <div class="form-input-box">
+                <table class="genre-table" style="font-size: 10px;">
+                    <tr>
+                        <td>реклама <input type="checkbox" name="p16" value="реклама"></td>
+                        <td>преса <input type="checkbox" name="p16" value="преса"></td>
+                        <td>ТБ <input type="checkbox" name="p16" value="ТБ"></td>
+                        <td>fm-радіо <input type="checkbox" name="p16" value="радіо"></td>
+                        <td>інтернет <input type="checkbox" name="p16" value="інтернет"></td>
+                        <td>знайомі <input type="checkbox" name="p16" value="знайомі"></td>
+                    </tr>
+                </table>
+            </div>
         </div>
 
-        <div class="field-group">
-            <label>09. Національність / мова спілкування</label>
-            <div class="instruction">[ національність виконавця(ів) ] [ мова спілкування в побуті ]</div>
-            <input type="text" name="p9" required>
-        </div>
-
-        <div class="field-group">
-            <label>10. Конкурсний репертуар (1 пісня, 2 пісня, 3 пісня)</label>
-            <div class="instruction">[ назва пісні / хронометраж / автор музики / автор слів ]</div>
-            <textarea name="p10" rows="3" required></textarea>
-        </div>
-
-        <div class="field-group">
-            <label>11. Студія звукозапису / місце репетицій</label>
-            <div class="instruction">[ назва студії / поштова адреса / контактний телефон ]</div>
-            <input type="text" name="p11" required>
-        </div>
-
-        <div class="field-group">
-            <label>12. Участь у фестивалях / конкурсах</label>
-            <div class="instruction">[ вказати три фестивалі / конкурси та призові місця ]</div>
-            <input type="text" name="p12" required>
-        </div>
-
-        <div class="field-group">
-            <label>13. Ваш репертуар українською мовою</label>
-            <div class="instruction">[ кількість пісень / час звучання / авторських пісень ]</div>
-            <input type="text" name="p13" required>
-        </div>
-
-        <div class="field-group">
-            <label>14. Улюблені музиканти та гурти</label>
-            <div class="instruction">[ українські виконавці (три) / закордонні виконавці (три) ]</div>
-            <input type="text" name="p14" required>
-        </div>
-
-        <div class="field-group">
-            <label>15. Ваші очікування від фестивалю</label>
-            <input type="text" name="p15" required>
-        </div>
-
-        <div class="field-group">
-            <label>16. Звідки Ви дізналися про конкурс?</label>
-            <div class="instruction">[ реклама, преса, ТБ, радіо, інтернет, знайомі ]</div>
-            <input type="text" name="p16" required>
-        </div>
-
-        <div style="margin-top: 20px;">
-            З Положенням про фестиваль та його Творчою концепцією ознайомлений(а). Зобов’язуюся(ємося) дотримуватися Положення.
-        </div>
-
-        <button type="submit" class="submit-btn" id="submitBtn">ВІДПРАВИТИ ЗАЯВКУ</button>
+        <button type="submit" class="submit-btn" id="saveBtn">ВІДПРАВИТИ ОФІЦІЙНУ ЗАЯВКУ</button>
     </form>
 </div>
 
 <script>
-    document.getElementById('rutaOfficialForm').onsubmit = async (e) => {
+    document.getElementById('rutaFinalForm').onsubmit = async (e) => {
         e.preventDefault();
-        const btn = document.getElementById('submitBtn');
+        const btn = document.getElementById('saveBtn');
         btn.disabled = true;
-        btn.innerText = "ВІДПРАВКА...";
+        btn.innerText = "ОБРОБКА ДАНИХ...";
 
         const formData = new FormData(e.target);
         const data = Object.fromEntries(formData.entries());
-        data.user_id = localStorage.getItem('user') || 'Анонім';
+        data.user_id = localStorage.getItem('user') || 'Гість';
 
         try {
             const response = await fetch('https://n8n.narodocnt.online/webhook/ruta-zayavka', {
@@ -167,17 +183,14 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
             });
-
             if (response.ok) {
-                alert('Вашу заявку успішно надіслано до Дирекції фестивалю!');
+                alert('Дякуємо! Вашу офіційну заявку надіслано до дирекції фестивалю.');
                 window.location.href = 'index.html';
-            } else {
-                throw new Error();
-            }
+            } else { throw new Error(); }
         } catch (err) {
-            alert('Помилка відправки. Перевірте з’єднання.');
+            alert('Помилка відправки. Спробуйте ще раз.');
             btn.disabled = false;
-            btn.innerText = "ВІДПРАВИТИ ЗАЯВКУ";
+            btn.innerText = "ВІДПРАВИТИ ОФІЦІЙНУ ЗАЯВКУ";
         }
     };
 </script>
