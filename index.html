@@ -1,168 +1,164 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Відділ народної творчості Черкаського ОЦНТ</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Відділ народної творчості Черкаського ОЦНТ</title>
 
-    <link rel="icon" type="image/png" href="фото_для_боту.png">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="contest.css">
-    
-    <style>
-        :root { --primary: #1e272e; --accent: #e67e22; --bg: #f5f6fa; --nav: #2f3640; }
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: var(--bg); color: var(--primary); overflow-x: hidden; }
-        
-        /* Хедер */
-        header { background: white; padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
-        .logo-box { display: flex; align-items: center; gap: 15px; }
-        .logo-img { height: 60px; border-radius: 8px; }
-        .logo-text h1 { font-size: 1.1rem; margin: 0; line-height: 1.2; }
-        .logo-text p { font-size: 0.85rem; margin: 0; color: #7f8c8d; }
-        
-        .header-right { display: flex; align-items: center; gap: 15px; }
-        .header-socials { display: flex; gap: 12px; }
-        .header-socials a { font-size: 1.4rem; color: var(--nav); transition: 0.3s; }
-        .auth-btn { cursor: pointer; padding: 8px 20px; border: 2px solid var(--nav); border-radius: 25px; font-weight: bold; font-size: 0.9rem; }
+    <link rel="icon" type="image/png" href="фото_для_боту.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="contest.css">
+    
+    <style>
+        :root { --primary: #1e272e; --accent: #e67e22; --bg: #f5f6fa; --nav: #2f3640; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: var(--bg); color: var(--primary); overflow-x: hidden; }
+        
+        /* Хедер */
+        header { background: white; padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
+        .logo-box { display: flex; align-items: center; gap: 15px; }
+        .logo-img { height: 60px; border-radius: 8px; }
+        .logo-text h1 { font-size: 1.1rem; margin: 0; line-height: 1.2; }
+        .logo-text p { font-size: 0.85rem; margin: 0; color: #7f8c8d; }
+        
+        .header-right { display: flex; align-items: center; gap: 15px; }
+        .header-socials { display: flex; gap: 12px; }
+        .header-socials a { font-size: 1.4rem; color: var(--nav); transition: 0.3s; }
+        .auth-btn { cursor: pointer; padding: 8px 20px; border: 2px solid var(--nav); border-radius: 25px; font-weight: bold; font-size: 0.9rem; transition: 0.3s; }
 
-        /* Навігація */
-        nav { background: var(--nav); display: flex; justify-content: center; position: relative; }
-        nav a, .dropbtn { color: white; padding: 15px 20px; text-decoration: none; font-weight: 600; font-size: 14px; cursor: pointer; background: none; border: none; }
-        
-        .dropdown { position: relative; display: inline-block; }
-        .dropdown-content { 
-            display: none; position: absolute; background-color: white; min-width: 220px; 
-            box-shadow: 0px 8px 16px rgba(0,0,0,0.2); z-index: 1001; border-radius: 0 0 8px 8px;
-        }
-        .dropdown-content a { color: var(--primary); padding: 12px 16px; display: block; border-bottom: 1px solid #eee; text-align: left; text-decoration: none; cursor: pointer; }
-        .dropdown:hover .dropdown-content { display: block; }
+        /* Навігація */
+        nav { background: var(--nav); display: flex; justify-content: center; position: relative; flex-wrap: wrap; }
+        nav a, .dropbtn { color: white; padding: 15px 20px; text-decoration: none; font-weight: 600; font-size: 14px; cursor: pointer; background: none; border: none; }
+        
+        .dropdown { position: relative; display: inline-block; }
+        .dropdown-content { 
+            display: none; position: absolute; background-color: white; min-width: 220px; 
+            box-shadow: 0px 8px 16px rgba(0,0,0,0.2); z-index: 1001; border-radius: 0 0 8px 8px;
+        }
+        .dropdown-content a { color: var(--primary); padding: 12px 16px; display: block; border-bottom: 1px solid #eee; text-align: left; text-decoration: none; }
+        .dropdown:hover .dropdown-content { display: block; }
 
-        /* Контейнери */
-        .contest-container { max-width: 900px; margin: 20px auto; background: white; padding: 20px; border-radius: 15px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        /* Контейнери */
+        .ruta-container { 
+            position: relative; max-width: 900px; margin: 20px auto; 
+            border-radius: 15px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .contest-container { max-width: 900px; margin: 20px auto; background: white; padding: 20px; border-radius: 15px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
 
-        footer { background: #2f3640; padding: 40px; color: white; text-align: center; margin-top: 50px; }
-        .social-icons a { color: white; font-size: 2rem; margin: 0 12px; }
+        footer { background: #2f3640; padding: 40px; color: white; text-align: center; margin-top: 50px; }
+        .social-icons a { color: white; font-size: 2rem; margin: 0 12px; }
 
-        /* Стиль для модалки колективів */
-        #modalBody { max-height: 70vh; overflow-y: auto; }
-
-        @media (max-width: 600px) { .header-socials { display: none; } }
-    </style>
+        @media (max-width: 600px) { 
+            .header-socials { display: none; }
+            header { padding: 10px 2%; }
+            .logo-text h1 { font-size: 0.9rem; }
+            nav a, .dropbtn { padding: 10px 10px; font-size: 12px; }
+        }
+    </style>
 </head>
 <body>
 
 <header>
-    <div class="logo-box">
-        <img src="фото_для_боту.png" class="logo-img">
-        <div class="logo-text">
-            <h1>Відділ народної творчості</h1>
-            <p>Черкаського ОЦНТ</p>
-        </div>
-    </div>
-    <div class="header-right">
-        <div class="header-socials">
-            <a href="https://www.facebook.com/narodocntcherkasy/" target="_blank"><i class="fab fa-facebook"></i></a>
-            <a href="https://www.youtube.com/@Cherkasy_OCNT" target="_blank"><i class="fab fa-youtube"></i></a>
-            <a href="https://t.me/narodocnt_bot" target="_blank"><i class="fab fa-telegram"></i></a>
-        </div>
-        <div class="auth-btn" id="loginBtn" onclick="handleAuthClick()">Увійти</div>
-    </div>
+    <div class="logo-box">
+        <img src="фото_для_боту.png" class="logo-img">
+        <div class="logo-text">
+            <h1>Відділ народної творчості</h1>
+            <p>Черкаського ОЦНТ</p>
+        </div>
+    </div>
+    <div class="header-right">
+        <div class="header-socials">
+            <a href="https://www.facebook.com/narodocntcherkasy/" target="_blank"><i class="fab fa-facebook"></i></a>
+            <a href="https://www.youtube.com/@Cherkasy_OCNT" target="_blank"><i class="fab fa-youtube"></i></a>
+            <a href="https://t.me/narodocnt_bot" target="_blank"><i class="fab fa-telegram"></i></a>
+        </div>
+        <div class="auth-btn" id="loginBtn" onclick="handleAuthClick()">Увійти</div>
+    </div>
 </header>
 
 <nav>
-    <div class="dropdown">
-        <button class="dropbtn">КОЛЕКТИВИ <i class="fa fa-caret-down"></i></button>
-        <div class="dropdown-content">
-            <a onclick="openGenre('vocal')">Вокально-хоровий</a>
-            <a onclick="openGenre('choreographic')">Хореографічний</a>
-            <a onclick="openGenre('theatrical')">Театральний</a>
-            <a onclick="openGenre('instrumental')">Музично-інструментальний</a>
-        </div>
-    </div>
-    <a onclick="goToGeneralForm()" style="color: #f1c40f;">ПОДАТИ ЗАЯВКУ</a>
+    <div class="dropdown">
+        <button class="dropbtn">КОЛЕКТИВИ <i class="fa fa-caret-down"></i></button>
+        <div class="dropdown-content">
+            <a onclick="openGenre('vocal')">Вокально-хоровий</a>
+            <a onclick="openGenre('choreographic')">Хореографічний</a>
+            <a onclick="openGenre('theatrical')">Театральний</a>
+            <a onclick="openGenre('instrumental')">Музично-інструментальний</a>
+        </div>
+    </div>
+    <a onclick="goToGeneralForm()" style="color: #f1c40f;">ПОДАТИ ЗАЯВКУ</a>
 </nav>
 
-    <div class="ruta-container" style="
-    position: relative; 
-    overflow: hidden; 
-    border-radius: 15px; 
-    width: 900px;      /* Встановлюємо ширину контейнера як у картинки */
-    margin: 20px auto; /* Центруємо контейнер: 0 зверху/знизу, auto зліва/справа */
-    max-width: 100%;   /* Щоб на мобільних він не вилазив за екран */
-">
-    <img src="cheruta.jpg" class="ruta-img" alt="Червона Рута" style="width: 100%; display: block;">
+<div class="ruta-container">
+    <img src="cheruta.jpg" alt="Червона Рута" style="width: 100%; display: block;">
 </div>
 
-<div id="about"></div>
-
 <div class="contest-container">
-    <img src="bitva.png" style="width:100%; max-width:400px; border-radius:10px; margin-bottom: 15px;">
-    <h2 id="festival-title">🏆 Битва вподобайків</h2>
-    <div id="rankingList">Завантаження рейтингу...</div>
+    <img src="bitva.png" style="width:100%; max-width:400px; border-radius:10px; margin-bottom: 15px;">
+    <h2 id="festival-title">🏆 Битва вподобайків</h2>
+    <div id="rankingList">Завантаження рейтингу...</div>
 </div>
 
 <footer id="contacts">
-    <div class="social-icons">
-        <a href="https://www.facebook.com/narodocntcherkasy/" target="_blank"><i class="fab fa-facebook"></i></a>
-        <a href="https://www.youtube.com/@Cherkasy_OCNT" target="_blank"><i class="fab fa-youtube"></i></a>
-        <a href="https://t.me/narodocnt_bot" target="_blank"><i class="fab fa-telegram"></i></a>
-    </div>
-    <p style="margin-top:20px;">Email: narodocnt@ukr.net</p>
+    <div class="social-icons">
+        <a href="https://www.facebook.com/narodocntcherkasy/" target="_blank"><i class="fab fa-facebook"></i></a>
+        <a href="https://www.youtube.com/@Cherkasy_OCNT" target="_blank"><i class="fab fa-youtube"></i></a>
+        <a href="https://t.me/narodocnt_bot" target="_blank"><i class="fab fa-telegram"></i></a>
+    </div>
+    <p style="margin-top:20px;">Email: narodocnt@ukr.net</p>
 </footer>
 
 <div id="listModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:2000; justify-content:center; align-items:center;" onclick="closeModal()">
-    <div style="background:white; padding:25px; border-radius:15px; width:90%; max-width:650px; position:relative;" onclick="event.stopPropagation()">
-        <span onclick="closeModal()" style="float:right; cursor:pointer; font-size:28px;">&times;</span>
-        <div id="modalBody"></div>
-    </div>
+    <div style="background:white; padding:25px; border-radius:15px; width:90%; max-width:650px; position:relative;" onclick="event.stopPropagation()">
+        <span onclick="closeModal()" style="float:right; cursor:pointer; font-size:28px;">&times;</span>
+        <div id="modalBody"></div>
+    </div>
 </div>
 
 <script src="collectives.js"></script>
-<script src="cheruta.js"></script> 
+<script src="cheruta.js"></script>
 <script src="contest.js"></script>
 
 <script>
-    const RUTA_WEBHOOK = "https://n8n.narodocnt.online/webhook/ruta-zayavka";
-    const GENERAL_FORM_URL = "https://n8n.narodocnt.online/webhook/2e38b09c-9ea5-4123-bdf0-b26dfdf7432c/n8n-form";
-    const AUTH_URL = "https://accounts.google.com/o/oauth2/v2/auth?client_id=734541752522-bqp7ljgjq27k8psn3pv6g3c3rcp16fhi.apps.googleusercontent.com&redirect_uri=https://n8n.narodocnt.online/webhook/google-signup&response_type=code&scope=openid%20email%20profile&prompt=consent";
+    const AUTH_URL = "https://accounts.google.com/o/oauth2/v2/auth?client_id=734541752522-bqp7ljgjq27k8psn3pv6g3c3rcp16fhi.apps.googleusercontent.com&redirect_uri=https://n8n.narodocnt.online/webhook/google-signup&response_type=code&scope=openid%20email%20profile&prompt=consent";
+    const GENERAL_FORM_URL = "https://n8n.narodocnt.online/webhook/2e38b09c-9ea5-4123-bdf0-b26dfdf7432c/n8n-form";
 
-    // Авторизація
-    function handleAuthClick() {
-        const user = localStorage.getItem('user');
-        if (user) {
-            if (confirm(`Вийти з аккаунту ${user}?`)) {
-                localStorage.removeItem('user');
-                location.reload();
-            }
-        } else {
-            window.location.href = AUTH_URL;
-        }
-    }
+    function handleAuthClick() {
+        const user = localStorage.getItem('user');
+        if (user) {
+            if (confirm(`Вийти з аккаунту ${user}?`)) {
+                localStorage.removeItem('user');
+                location.reload();
+            }
+        } else {
+            window.location.href = AUTH_URL;
+        }
+    }
 
-    // Загальна форма
-    function goToGeneralForm() {
-        if (!localStorage.getItem('user')) {
-            alert("Будь ласка, авторизуйтесь.");
-            handleAuthClick();
-        } else {
-            window.location.href = GENERAL_FORM_URL;
-        }
-    }
+    function goToGeneralForm() {
+        if (!localStorage.getItem('user')) {
+            alert("Будь ласка, авторизуйтесь через Google.");
+            handleAuthClick();
+        } else {
+            window.location.href = GENERAL_FORM_URL;
+        }
+    }
 
-    // Обробка входу після Google Redirect
-    document.addEventListener('DOMContentLoaded', function() {
-        const params = new URLSearchParams(window.location.search);
-        const name = params.get('name');
-        if (name) localStorage.setItem('user', decodeURIComponent(name));
+    // Відновлення стану входу
+    document.addEventListener('DOMContentLoaded', function() {
+        const params = new URLSearchParams(window.location.search);
+        const name = params.get('name');
+        if (name) localStorage.setItem('user', decodeURIComponent(name));
 
-        const user = localStorage.getItem('user');
-        if (user) {
-            const btn = document.getElementById('loginBtn');
-            btn.innerText = user;
-            btn.style.background = "#27ae60";
-            btn.style.color = "white";
-        }
-    });
+        const user = localStorage.getItem('user');
+        if (user) {
+            const btn = document.getElementById('loginBtn');
+            btn.innerText = user;
+            btn.style.background = "#27ae60";
+            btn.style.color = "white";
+        }
+    });
+
+    function closeModal() { document.getElementById('listModal').style.display = 'none'; }
 </script>
 </body>
 </html>
