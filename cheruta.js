@@ -97,7 +97,8 @@ function goToGeneralForm() {
             userName = encodeURIComponent(userData.displayName || userData.name || "");
         } catch(e) { console.error("User data parse error", e); }
         
-        const n8nFormUrl = `https://n8n.narodocnt.online/form/cheruta?name=${userName}`;
+        // Знадіть цей рядок у функції goToGeneralForm і замініть його:
+        const n8nFormUrl = `https://n8n.narodocnt.online/webhook/cheruta/n8n-form?name=${userName}`;
         window.open(n8nFormUrl, '_blank');
     }
 }
