@@ -121,8 +121,9 @@
 
 <script>
     const AUTH_URL = "https://accounts.google.com/o/oauth2/v2/auth?client_id=734541752522-bqp7ljgjq27k8psn3pv6g3c3rcp16fhi.apps.googleusercontent.com&redirect_uri=https://n8n.narodocnt.online/webhook/google-signup&response_type=code&scope=openid%20email%20profile&prompt=consent";
-  
-  function handleAuthClick() {
+
+    // Ця функція ОБОВ'ЯЗКОВО має бути тут
+    function handleAuthClick() {
         const user = localStorage.getItem('user');
         if (user) {
             if (confirm(`Вийти з аккаунту ${user}?`)) {
@@ -133,17 +134,7 @@
             window.location.href = AUTH_URL;
         }
     }
-    
-    function goToGeneralForm() {
-        if (!localStorage.getItem('user')) {
-            alert("Будь ласка, авторизуйтесь через Google.");
-            handleAuthClick();
-        } else {
-            window.location.href = GENERAL_FORM_URL;
-        }
-    }
 
-    // Відновлення стану входу
     document.addEventListener('DOMContentLoaded', function() {
         const params = new URLSearchParams(window.location.search);
         const name = params.get('name');
@@ -152,9 +143,11 @@
         const user = localStorage.getItem('user');
         if (user) {
             const btn = document.getElementById('loginBtn');
-            btn.innerText = user;
-            btn.style.background = "#27ae60";
-            btn.style.color = "white";
+            if (btn) {
+                btn.innerText = user;
+                btn.style.background = "#27ae60";
+                btn.style.color = "white";
+            }
         }
     });
 
