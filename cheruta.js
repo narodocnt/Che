@@ -53,13 +53,25 @@ function initRutaUI() {
 
 function goToGeneralForm(type = 'main') {
     const user = localStorage.getItem('user');
+
     if (!user) {
-        alert("🔒 Авторизуйтесь через Google!");
+        alert("🔒 Авторизуйтесь, будь ласка, через Google!");
         if (typeof handleAuthClick === 'function') handleAuthClick();
         return;
     }
+
     const userName = encodeURIComponent(user);
-    const url = `https://n8n.narodocnt.online/webhook/cheruta/n8n-form?name=${userName}`;
+    let url = "";
+
+    // Розподіляємо посилання за типом
+    if (type === 'cheruta') {
+        // Форма для Червоної Рути
+        url = `https://n8n.narodocnt.online/webhook/cheruta/n8n-form?name=${userName}`;
+    } else {
+        // ЗАГАЛЬНА ФОРМА (ваше нове посилання)
+        url = `https://n8n.narodocnt.online/webhook/ruta-zajavka/n8n-form?name=${userName}`;
+    }
+
     window.open(url, '_blank');
 }
 
