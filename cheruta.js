@@ -8,7 +8,7 @@ function initRutaUI() {
     const uiHtml = `
     <div id="ruta-ui-layer" style="position: absolute; bottom: 0; left: 0; width: 100%; background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%); display: flex; align-items: center; justify-content: space-between; padding: 5px 12px; box-sizing: border-box; z-index: 999;">
         <div style="flex: 1; display: flex; justify-content: flex-start;">
-            <button onclick="window.open('polozhennya.pdf', '_blank')" 
+            <button onclick="window.open('https://narodocnt.online/polozhennya.pdf', '_blank')" 
                 style="background: rgba(255,255,255,0.2); border: 1px solid white; color: white; padding: 6px 10px; border-radius: 6px; font-size: 10px; font-weight: bold; cursor: pointer; text-transform: uppercase;">
                 ПОЛОЖЕННЯ
             </button>
