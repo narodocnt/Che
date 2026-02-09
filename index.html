@@ -114,39 +114,162 @@
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
+<script>
+    // 1. КОНСТАНТИ
+    const AUTH_URL = "https://accounts.google.com/o/oauth2/v2/auth?client_id=734541752522-bqp7ljgjq27k8psn3pv6g3c3rcp16fhi.apps.googleusercontent.com&redirect_uri=https://n8n.narodocnt.online/webhook/google-signup&response_type=code&scope=openid%20email%20profile&prompt=consent";
+
+    // 2. АВТОРИЗАЦІЯ
+    function handleAuthClick() {
+        const user = localStorage.getItem('user');
+        if (user) {
+            if (confirm(`Вийти з аккаунту ${user}?`)) {
+                localStorage.removeItem('user');
+                location.reload();
+            }
+        } else {
+            window.location.href = AUTH_URL;
+        }
+    }
+
+    // 3. МЕНЮ ЗАЯВОК (menu.html)
+    async function openApplicationMenu() {
+        const user = localStorage.getItem('user');
+        if (!user) {
+            alert("🔒 Авторизуйтесь через Google для доступу до заявок!");
+            handleAuthClick();
+            return;
+        }
+
+        try {
+            const response = await fetch('menu.html');
+            if (!response.ok) throw new Error("Файл не знайдено");
+            const html = await response.text();
+            showModal(html);
+        } catch (error) {
+            console.error("Помилка:", error);
+            alert("Помилка завантаження меню заявок.");
+        }
+    }
+
+    // 4. ПЕРЕХІД ДО ФОРМ
+    function goToGeneralForm(type = 'main') {
+        const user = localStorage.getItem('user');
+        if (!user) {
+            alert("🔒 Авторизуйтесь, будь ласка!");
+            handleAuthClick();
+            return;
+        }
+        const userName = encodeURIComponent(user);
+        let url = (type === 'cheruta') 
+            ? `https://n8n.narodocnt.online/webhook/cheruta/n8n-form?name=${userName}`
+            : `https://n8n.narodocnt.online/webhook/main-zajavka/n8n-form?name=${userName}`;
+        window.open(url, '_blank');
+    }
+
+    // 5. КЕРУВАННЯ КАРТОЮ
+    function updateMode(mode) {
+        const btnCol = document.getElementById('btn-col');
+        const btnBat = document.getElementById('btn-bat');
+        if(btnCol) btnCol.style.background = (mode === 'collectives' ? '#e67e22' : '#2f3640');
+        if(btnBat) btnBat.style.background = (mode === 'battle' ? '#e67e22' : '#2f3640');
+        
+        // Викликаємо функцію з файлів map-bitva.js або map-collectives.js
+        if (typeof setMapMode === 'function') {
+            setMapMode(mode);
+        } else if (window.setMode) {
+            window.setMode(mode);
+        }
+    }
+
+    // 6. ВИПАДАЮЧЕ МЕНЮ (Колективи)
+    function toggleDropdown() {
+        const menu = document.getElementById("collectivesMenu");
+        if (menu) menu.classList.toggle("show");
+    }
+
+    // 7. МОДАЛЬНЕ ВІКНО
+    function showModal(content) {
+        const modal = document.getElementById('listModal');
+        const body = document.getElementById('modalBody');
+        if (modal && body) {
+            body.innerHTML = content;
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
+    function closeModal() { 
+        const modal = document.getElementById('listModal');
+        if (modal) {
+            modal.style.display = 'none'; 
+            document.body.style.overflow = 'auto';
+        }
+    }
+
+    // 8. ПРАВИЛА (зірочка)
+    function toggleRules(event) {
+        if (typeof showRules === 'function') {
+            showRules();
+        } else {
+            alert("Правила: 1 вподобайка = 1 бал, 1 поширення = 2 бали.");
+        }
+    }
+
+    // 9. ТАЙМЕР РУТИ
+    function initRutaUI() {
+        const target = new Date("March 21, 2026 09:00:00").getTime();
+        const timerInterval = setInterval(function() {
+            const now = new Date().getTime();
+            const diff = target - now;
+            if (diff < 0) {
+                clearInterval(timerInterval);
+                return;
+            }
+            const d = Math.floor(diff / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
+            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
+            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
+            const s = Math.floor((diff % (1000 * 60)) / 1000).toString().padStart(2, '0');
+
+            if (document.getElementById("d-val")) document.getElementById("d-val").innerText = d;
+            if (document.getElementById("h-val")) document.getElementById("h-val").innerText = h;
+            if (document.getElementById("m-val")) document.getElementById("m-val").innerText = m;
+            if (document.getElementById("s-val")) document.getElementById("s-val").innerText = s;
+        }, 1000);
+    }
+
+    // 10. ЗАПУСК ПРИ ЗАВАНТАЖЕННІ
+    document.addEventListener('DOMContentLoaded', function() {
+        // Перевірка імені з URL (після логіну)
+        const params = new URLSearchParams(window.location.search);
+        const name = params.get('name');
+        if (name) localStorage.setItem('user', decodeURIComponent(name));
+
+        // Відображення імені користувача
+        const user = localStorage.getItem('user');
+        if (user && document.getElementById('loginBtn')) {
+            const btn = document.getElementById('loginBtn');
+            btn.innerText = user;
+            btn.style.background = "#27ae60";
+            btn.style.color = "white";
+        }
+
+        initRutaUI();
+        
+        // Закриття меню при кліку вбік
+        window.onclick = function(event) {
+            if (!event.target.matches('.dropdown-toggle')) {
+                const dropdowns = document.getElementsByClassName("dropdown-content");
+                for (let d of dropdowns) d.classList.remove('show');
+            }
+        }
+    });
+</script>
+
 <script src="hromadas-data.js"></script>
 <script src="collectives-list.js"></script>
 <script src="collectives-bitva.js"></script>
-
-<script src="bitva-ranking.js"></script>
 <script src="map-bitva.js"></script>
-
-<script>
-    function handleAuthClick() {
-        // Логіка авторизації
-    }
-
-    function goToGeneralForm(type) {
-        // Логіка переходу на форму
-    }
-
-    function updateMode(mode) {
-        if (window.setMapMode) {
-            window.setMapMode(mode);
-        }
-        document.getElementById('btn-col').style.background = (mode === 'collectives' ? '#e67e22' : '#2f3640');
-        document.getElementById('btn-bat').style.background = (mode === 'battle' ? '#e67e22' : '#2f3640');
-    }
-
-    function toggleDropdown() {
-        document.getElementById("collectivesMenu").classList.toggle("show");
-    }
-
-    function closeModal() {
-        document.getElementById('listModal').style.display = 'none';
-        document.body.style.overflow = 'auto';
-    }
-</script>
+<script src="contest.js"></script>
 
 </body>
 </html>
