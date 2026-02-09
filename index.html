@@ -152,19 +152,38 @@
     }
 
     // 4. ПЕРЕХІД ДО ФОРМ
-    function goToGeneralForm(type = 'main') {
-        const user = localStorage.getItem('user');
-        if (!user) {
-            alert("🔒 Авторизуйтесь, будь ласка!");
-            handleAuthClick();
-            return;
-        }
-        const userName = encodeURIComponent(user);
-        let url = (type === 'cheruta') 
-            ? `https://n8n.narodocnt.online/webhook/cheruta/n8n-form?name=${userName}`
-            : `https://n8n.narodocnt.online/webhook/main-zajavka/n8n-form?name=${userName}`;
-        window.open(url, '_blank');
+  function goToGeneralForm(type = 'main') {
+    const user = localStorage.getItem('user');
+    if (!user) {
+        alert("🔒 Будь ласка, авторизуйтесь!");
+        handleAuthClick();
+        return;
     }
+    
+    const userName = encodeURIComponent(user);
+    let url = "";
+
+    // ТОЧНІ АДРЕСИ ДЛЯ КОЖНОЇ ЗАЯВКИ
+    if (type === 'cheruta') {
+        // Шлях для Червоної Рути (той самий, що на банері)
+        url = `https://n8n.narodocnt.online/webhook/cheruta/n8n-form?name=${userName}`;
+    } 
+    else if (type === 'main' || type === 'zajavka') {
+        // Основна загальна заявка
+        url = `https://n8n.narodocnt.online/webhook/main-zajavka/n8n-form?name=${userName}`;
+    }
+    else if (type === 'we_from_ukraine' || type === 'my_z_ukrainy') {
+        // Нова заявка "Ми з України" (Шевченка), яку ми обговорювали
+        url = `https://n8n.narodocnt.online/webhook/we-from-ukraine/n8n-form?name=${userName}`;
+    }
+    else {
+        // Якщо тип не збігається, пробуємо універсальний шлях
+        url = `https://n8n.narodocnt.online/webhook/${type}/n8n-form?name=${userName}`;
+    }
+    
+    console.log("Відкриваємо форму для типу:", type, "URL:", url);
+    window.open(url, '_blank');
+}
 
     // 5. КЕРУВАННЯ КАРТОЮ
     function updateMode(mode) {
